@@ -1,0 +1,673 @@
+%
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+\usepackage{amsmath}
+% And some student asked me to include amsmath as well...
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+% The tikz package can be used to draw all kinds of diagrams.
+% In this assignment it is being used for drawing the parse trees
+
+
+\usepackage{xspace}
+% xspace can be used to let LaTeX decide whether a command should be followed
+% y a space or not, depending on what follows.
+
+% Some obscure definition to create a circled node within xy.
+% The definition is made by Freek Wiedijk who prefers to do his definitions
+% in TeX instead of LaTeX, which explains the \def instead of \newcommand.
+\def\node{*++[o][F-]}
+\def\fnode{*++[o][F=]}
+
+\usepackage{csquotes}
+\usepackage{mathtools}
+\usepackage{cancel}
+
+% This command puts a `def' on top of an `='.
+\newcommand{\isdef}{\ensuremath{\,\,\buildrel\rm def\over=}\,\,}
+
+\reversemarginpar
+\title{Linear Algebra for AI\\Assignment 6}
+
+\author{Tony Lopar \\ s1013792 \\ Group 5 \quad Felicity Reddel}
+
+\begin{document}
+\maketitle
+
+\section*{Exercise 1}
+In order to find the determinant I will first reduce the matrix to Echelon form and then multiply the pivots with eachother. In order to find the original determinant, I will inverse all the modifications on the matrix on the value of the determinant to remove all influences of the modifications from the determinant.
+\[
+\left(
+\begin{array}{rrrr}
+2 & 5 & -3 & -2 \\
+-2 & -3 & 2 & -5 \\
+1 & 3 & -2 & 0 \\
+-1 & -6 & 4 & 0 \\
+\end{array}
+\right)
+\xrightarrow{R_2 := R_2 + 1 \cdot R_1}
+\left(
+\begin{array}{rrrr}
+2 & 5 & -3 & -2 \\
+0 & 2 & -1 & -7 \\
+1 & 3 & -2 & 0 \\
+-1 & -6 & 4 & 0 \\
+\end{array}
+\right)
+\xrightarrow{R_3 := R_3 + (- \frac{1}{2}) \cdot R_1}
+\left(
+\begin{array}{rrrr}
+2 & 5 & -3 & -2 \\
+0 & 2 & -1 & -7 \\
+0 & \frac{1}{2} & - \frac{1}{2} & 1 \\
+-1 & -6 & 4 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{R_4 := R_4 + \frac{1}{2} \cdot R_1}
+\left(
+\begin{array}{rrrr}
+2 & 5 & -3 & -2 \\
+0 & 2 & -1 & -7 \\
+0 & \frac{1}{2} & - \frac{1}{2} & 1 \\
+0 & - \frac{7}{2} & \frac{5}{2} & -1 \\
+\end{array}
+\right)
+\xrightarrow{R_4 := R_4 + 7 \cdot R_3}
+\left(
+\begin{array}{rrrr}
+2 & 5 & -3 & -2 \\
+0 & 2 & -1 & -7 \\
+0 & \frac{1}{2} & - \frac{1}{2} & 1 \\
+0 & 0 & -1 & 6 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{R_3 := R_3 + (-\frac{1}{4}) \cdot R_2}
+\left(
+\begin{array}{rrrr}
+2 & 5 & -3 & -2 \\
+0 & 2 & -1 & -7 \\
+0 & 0 & - \frac{1}{4} & \frac{11}{4} \\
+0 & 0 & -1 & 6 \\
+\end{array}
+\right)
+\xrightarrow{R_4 := R_4 + (-4) \cdot R_3}
+\left(
+\begin{array}{rrrr}
+2 & 5 & -3 & -2 \\
+0 & 2 & -1 & -7 \\
+0 & 0 & - \frac{1}{4} & \frac{11}{4} \\
+0 & 0 & 0 & -5 \\
+\end{array}
+\right)
+\]
+Multiplying the pivots gives the following:
+\[det(A) = 2 \cdot 2 \cdot - \frac{1}{4} \cdot -5 = 5\]
+This determinant has not been influenced by the modifications on the matrix, since no rows are swapped or multiplied by itself. The only modifications are a adding another row to the rows. This modification doesn't change the determinant which means the determinant is equal to the current multiplication of pivots.
+% Reduce to echelon and find the determinant by multiplying. Then tranform the inverse transformations that were done on the matrix in the opposite way to get the original det?
+
+\section*{Exercise 2}
+\begin{enumerate}
+  \item The characteristic polynomial can be obtained by computing $A - \lambda \cdot I$. So first we need to compute:
+  \[
+  A - \lambda \cdot I =
+  \left(
+  \begin{array}{rrr}
+  1 & -3 & 4 \\
+  4 & -7 & 8 \\
+  6 & -7 & 7 \\
+  \end{array}
+  \right)
+  -
+  \left(
+  \begin{array}{rrr}
+  \lambda & 0 & 0 \\
+  0 & \lambda & 0 \\
+  0 & 0 & \lambda \\
+  \end{array}
+  \right)
+  =
+  \left(
+  \begin{array}{rrr}
+  1 - \lambda & -3 & 4 \\
+  4 & -7 - \lambda & 8 \\
+  6 & -7 & 7 - \lambda \\
+  \end{array}
+  \right)
+  \]
+  This gives the following characteristic polynomial:
+  \[
+  \left|
+  \begin{array}{rrr}
+  1 - \lambda & -3 & 4 \\
+  4 & -7 - \lambda & 8 \\
+  6 & -7 & 7 - \lambda \\
+  \end{array}
+  \right|
+  \]
+  \item The eigenvalues may be computed using the characteristic polynomial from the previous question.
+  \begin{align*}
+  det(A - \lambda \cdot I) &=
+  (1 - \lambda)
+  \left|
+  \begin{array}{rr}
+  -7 - \lambda & 8 \\
+  -7 & 7 - \lambda \\
+  \end{array}
+  \right|
+  - 4
+  \left|
+  \begin{array}{rr}
+  -3 & 4 \\
+  -7 & 7 - \lambda \\
+  \end{array}
+  \right|
+  + 6
+  \left|
+  \begin{array}{rr}
+  -3 & 4 \\
+  -7 - \lambda & 8 \\
+  \end{array}
+  \right| \\
+  &= (1 - \lambda)((-7-\lambda)(7 - \lambda) + 56) - 4 (-3(7 - \lambda) + 28) + 6(-24 - 4(-7 - \lambda)) \\
+&= (1 - \lambda)((-49 + 7 \lambda - 7 \lambda + \lambda^2) + 56) - 4(-21 + 3 \lambda + 28) + 6(-24 + 28 + 4 \lambda)\\
+&= (1 - \lambda)(\lambda^2 + 7) - 4(3 \lambda + 7) + 6(4 + 4 \lambda)\\
+&= - \lambda^3 + \lambda^2 - 7 \lambda + 7 - 12 \lambda - 28 + 24 + 24 \lambda \\
+&= - \lambda^3 + \lambda^2 + 5 \lambda + 3
+  \end{align*}
+  To find the eigenvalues we should find the values for $\lambda$. These can be found as follows:
+  \begin{align*}
+    - \lambda^3 + \lambda^2 + 5 \lambda + 3 &= 0 \\
+    (\lambda + 1)(- \lambda^2 + 2 \lambda + 3) &= 0 \\
+    (\lambda + 1) \cdot -1(\lambda^2 - 2 \lambda - 3) &= 0 \\
+    (\lambda + 1) \cdot -1((\lambda - 3) (\lambda + 1)) &= 0 \\
+    (\lambda + 1) (-\lambda + 3) (-\lambda - 1) &= 0 \\
+    \lambda = - 1 \lor \lambda = 3 \lor \lambda = - 1
+  \end{align*}
+  We see that the eigenvalues of the matrix are $\lambda = -1$ and $\lambda = 3$.
+  % \begin{align*}
+  %   0 &= - \lambda^3 + \lambda^2 + 5 \lambda + 3 \\
+  %   3 &= \lambda^3 - \lambda^2 - 5 \lambda \\
+  %    &= \lambda (\lambda^2 - \lambda - 5) \\
+  %   % &= (\lambda - 1)(a \lambda^2 + b \lambda + c) \\
+  %   % &= a \lambda^3 + (b - a) \lambda^2 + (c - b) \lambda - c \\
+  %   % &= - 1 \lambda^3 + (0 + 1) \lambda^2 + (-3 - b) \lambda + 3 \\
+  % \end{align*}
+  % This gives us that $\lambda = 3$ or $(\lambda^2 - \lambda - 5) = 3$. We can solve the second equation with the abc-formula.
+  % \begin{align*}
+  %   \lambda^2 - \lambda - 5 &= 3 \\
+  %   \lambda^2 - \lambda - 8 &= 0 \\
+  %   s_{1,2} + 3
+  %   % &= \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \\
+  %   &= \frac{1 \pm \sqrt{(-1)^2 - 4 \cdot 1 \cdot - 5}}{2 \cdot 1} \\
+  %   &= \frac{1 \pm \sqrt{1 + 20}}{2} \\
+  %   &= \frac{1 \pm \sqrt{21}}{2} \\
+  %   &=
+  % \end{align*}
+  \item The eigenvector may be computed by using the eigenvalues found in the previous question. We first take $\lambda = -1$ which gives:
+  \begin{align*}
+    (A - - 1 \cdot I) &=
+    \left(
+    \begin{array}{rrr}
+    1 + 1 & -3 & 4 \\
+    4 & -7 + 1 & 8 \\
+    6 & -7 & 7 + 1 \\
+    \end{array}
+    \right) \\
+    &=
+    \left(
+    \begin{array}{rrr}
+    2 & -3 & 4 \\
+    4 & -6 & 8 \\
+    6 & -7 & 8 \\
+    \end{array}
+    \right)
+  \end{align*}
+  In order to find the vector we should reduce this matrix to echelon form.
+  \[
+  \left(
+  \begin{array}{rrr}
+  2 & -3 & 4 \\
+  4 & -6 & 8 \\
+  6 & -7 & 8 \\
+  \end{array}
+  \right)
+  \xrightarrow{R_2 := R_2 + (-2) \cdot R_1}
+  \left(
+  \begin{array}{rrr}
+  2 & -3 & 4 \\
+  0 & 0 & 0 \\
+  6 & -7 & 8 \\
+  \end{array}
+  \right)
+  \xrightarrow{R_2 \leftrightarrow R_3}
+  \left(
+  \begin{array}{rrr}
+  2 & -3 & 4 \\
+  6 & -7 & 8 \\
+  0 & 0 & 0 \\
+  \end{array}
+  \right)
+  \]
+  \[
+  \xrightarrow{R_2 := R_2 + (-3) R_1}
+  \left(
+  \begin{array}{rrr}
+  2 & -3 & 4 \\
+  0 & 2 & -4 \\
+  0 & 0 & 0 \\
+  \end{array}
+  \right)
+  \xrightarrow{R_2 := \frac{1}{2} R_2}
+  \left(
+  \begin{array}{rrr}
+  2 & -3 & 4 \\
+  0 & 1 & -2 \\
+  0 & 0 & 0 \\
+  \end{array}
+  \right)
+  \]
+  \[
+  \xrightarrow{R_1 := R_1 + 3 \cdot R_2}
+  \left(
+  \begin{array}{rrr}
+  2 & 0 & -2 \\
+  0 & 1 & -2 \\
+  0 & 0 & 0 \\
+  \end{array}
+  \right)
+  \xrightarrow{R_1 := \frac{1}{2} R_1}
+  \left(
+  \begin{array}{rrr}
+  1 & 0 & -1 \\
+  0 & 1 & -2 \\
+  0 & 0 & 0 \\
+  \end{array}
+  \right)
+  \]
+  This gives the following system of equations:
+  \begin{align*}
+    x - z &= 0 \\
+    x &= z \\
+    y - 2z &= 0 \\
+    y &= 2z \\
+  \end{align*}
+  If we take $z = 1$ then we get the following eigenvector:
+  \[
+  \left(
+  \begin{array}{r}
+  1 \\
+  2 \\
+  1 \\
+  \end{array}
+  \right)
+  \]
+
+  Now we can compute the eigenvector for $\lambda = 3$.
+  \begin{align*}
+    (A - 3 \cdot I) &=
+    \left(
+    \begin{array}{rrr}
+    1 - 3 & -3 & 4 \\
+    4 & -7 - 3 & 8 \\
+    6 & -7 & 7 - 3 \\
+    \end{array}
+    \right) \\
+    &=
+    \left(
+    \begin{array}{rrr}
+    -2 & -3 & 4 \\
+    4 & -10 & 8 \\
+    6 & -7 & 4 \\
+    \end{array}
+    \right)
+  \end{align*}
+  In order to find the vector we should reduce this matrix to echelon form.
+  \[
+  \left(
+  \begin{array}{rrr}
+  -2 & -3 & 4 \\
+  4 & -10 & 8 \\
+  6 & -7 & 4 \\
+  \end{array}
+  \right)
+  \xrightarrow{R2 := R_2 + 2 \cdot R_1}
+  \left(
+  \begin{array}{rrr}
+  -2 & -3 & 4 \\
+  0 & -16 & 16 \\
+  6 & -7 & 4 \\
+  \end{array}
+  \right)
+  \xrightarrow{R3 := R_3 + 3 \cdot R_1}
+  \left(
+  \begin{array}{rrr}
+  -2 & -3 & 4 \\
+  0 & -16 & 16 \\
+  0 & -16 & 16 \\
+  \end{array}
+  \right)
+  \]
+  \[
+  \xrightarrow{R3 := R_3 + (-1) \cdot R_2}
+  \left(
+  \begin{array}{rrr}
+  -2 & -3 & 4 \\
+  0 & -16 & 16 \\
+  0 & 0 & 0 \\
+  \end{array}
+  \right)
+  \xrightarrow{R2 := -\frac{1}{16} R_2}
+  \left(
+  \begin{array}{rrr}
+  -2 & -3 & 4 \\
+  0 & 1 & -1 \\
+  0 & 0 & 0 \\
+  \end{array}
+  \right)
+  \]
+  \[
+  \xrightarrow{R_1 := R_1 + 3 \cdot R_2}
+  \left(
+  \begin{array}{rrr}
+  -2 & 0 & 1 \\
+  0 & 1 & -1 \\
+  0 & 0 & 0 \\
+  \end{array}
+  \right)
+  \xrightarrow{R_1 := - \frac{1}{2} \cdot R_1}
+  \left(
+  \begin{array}{rrr}
+  1 & 0 & - \frac{1}{2} \\
+  0 & 1 & -1 \\
+  0 & 0 & 0 \\
+  \end{array}
+  \right)
+  \]
+  This gives us the following system of equations:
+  \begin{align*}
+    x - \frac{1}{2}z &= 0 \\
+    x &= \frac{1}{2}z \\
+    y - z &= 0 \\
+    y &= z
+  \end{align*}
+  If we take $z = 2$, then we get the following eigenvector:
+  \[
+  \left(
+  \begin{array}{r}
+  1 \\
+  2 \\
+  2 \\
+  \end{array}
+  \right)
+  \]
+
+\end{enumerate}
+
+\section*{Exercise 3}
+\begin{enumerate}
+  \item First, I will show that if we swap the first and second row that $det(B) = - det(A)$.
+  \[
+  A =
+  \left(
+  \begin{array}{cc}
+  a & b \\
+  c & d \\
+  \end{array}
+  \right)
+  \enspace
+  B =
+  \left(
+  \begin{array}{cc}
+  c & d \\
+  a & b \\
+  \end{array}
+  \right)
+  \]
+  The determinant of matrix A is $ad - bc$. The determinant of matrix B is $cb - da$. We can do the following transformations to express the $det(B)$ in the form of $det(A)$.
+  \begin{align*}
+    det(B) &= cb - da \\
+    &= bc - ad \\
+    &= - ad + bc \\
+    &= - (ad - bc) \\
+    &= - (det(A))
+  \end{align*}
+\item Next, I will show that if we multiply row $R_2$ with p the determinant becomes $pR_2$ where I choose $p = 2$.
+\[
+A =
+\left(
+\begin{array}{cc}
+a & b \\
+c & d \\
+\end{array}
+\right)
+\enspace
+C =
+\left(
+\begin{array}{cc}
+a & b \\
+2c & 2d \\
+\end{array}
+\right)
+\]
+The determinant of matrix A is $ad - bc$. The determinant of matrix C is $a2d - b2c$. We can do the following transformations to express $det(C)$ in the form of det(A).
+\begin{align*}
+  det(C) &= a2d - b2c \\
+  &= 2ad - 2bc \\
+  &= 2(ad - bc) \\
+  &= 2(det(A)) \\
+  &= p(det(A))
+\end{align*}
+\item Finally, I will show that the determinant doesn't change when we add $pR_1$ to $R_2$. I choose 1 as value for p.
+\[
+A =
+\left(
+\begin{array}{cc}
+a & b \\
+c & d \\
+\end{array}
+\right)
+\enspace
+D =
+\left(
+\begin{array}{cc}
+a & b \\
+c + a & d + b \\
+\end{array}
+\right)
+\]
+The determinant of matrix A is $ad - bc$. The determinant of matrix D is $a(d + b) - b(c + a)$. We can do the following transformations to express $det(D)$ in the form of det(A).
+\begin{align*}
+  det(D) &=
+  a(d + b) - b(c + a) \\ &= ad + ab - bc - ba \\
+  &= ad - bc + ba - ba \\
+  &= ad - bc \\
+  &= det(A)
+\end{align*}
+% 2. Let matrix C result from A via R2 := pR2 (for p ∈ R).
+% Show that det(C) = p det(A)
+% 3. Let matrix D result from A via R2 := R2 + pR1 (for p ∈ R).
+% Show that det(D) = det(A)
+
+\end{enumerate}
+
+\section*{Exercise 4}
+% \[
+% A =
+% \left(
+% \begin{array}{rrr}
+% -7 & -16 & 4 \\
+% 6 & 13 & -2 \\
+% 12 & 16 & 1 \\
+% \end{array}
+% \right)
+% \]
+The eigenvalue for $v_1$ may be computed by multiplying the original matrix the eigenvector. This should give a matrix which is a multiple of the eigenvector. This multiple is the corresponding eigenvalue.
+\[
+\left(
+\begin{array}{rrr}
+-7 & -16 & 4 \\
+6 & 13 & -2 \\
+12 & 16 & 1 \\
+\end{array}
+\right)
+\cdot
+\left(
+\begin{array}{r}
+-2 \\
+1 \\
+2 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{r}
+6 \\
+-3 \\
+-6 \\
+\end{array}
+\right)
+=
+-3 \cdot
+\left(
+\begin{array}{r}
+-2 \\
+1 \\
+2 \\
+\end{array}
+\right)
+\]
+In the computation above we see that the corresponding eigenvalue $\lambda = -3$ for the eigenvector $v_1$.
+
+% v1 = (−2, 1, 2). \lambda = -3
+
+
+The eigenvector for the eigenvalue $\lambda_2 = 5$ can be computed as follows:
+\begin{align*}
+  (A - 5 \cdot I) &= \left(
+  \begin{array}{rrr}
+  -7 - 5 & -16 & 4 \\
+  6 & 13 - 5 & -2 \\
+  12 & 16 & 1 - 5 \\
+  \end{array}
+  \right) \\
+  &= \left(
+  \begin{array}{rrr}
+  -12 & -16 & 4 \\
+  6 & 8 & -2 \\
+  12 & 16 & -4 \\
+  \end{array}
+  \right) \\
+\end{align*}
+In order to find the eigenvector we should reduce the matrix to Echelon form:
+\[
+\left(
+\begin{array}{rrr}
+-12 & -16 & 4 \\
+6 & 8 & -2 \\
+12 & 16 & -4 \\
+\end{array}
+\right)
+\xrightarrow{R_3 := R_3 + 1 \cdot R_1}
+\left(
+\begin{array}{rrr}
+-12 & -16 & 4 \\
+6 & 8 & -2 \\
+0 & 0 & 0 \\
+\end{array}
+\right)
+\xrightarrow{R_2 := R_2 + \frac{1}{2} \cdot R_1}
+\left(
+\begin{array}{rrr}
+-12 & -16 & 4 \\
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{R_1 := - \frac{1}{4} R_1}
+\left(
+\begin{array}{rrr}
+3 & 4 & -1 \\
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+\end{array}
+\right)
+\xrightarrow{R_1 := \frac{1}{3} R_1}
+\left(
+\begin{array}{rrr}
+1 & \frac{4}{3} & - \frac{1}{3} \\
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+\end{array}
+\right)
+\]
+This gives us the following equation:
+\begin{align*}
+  x + \frac{4}{3}y - \frac{1}{3}z &= 0 \\
+  x &= - \frac{4}{3}y + \frac{1}{3}z
+\end{align*}
+When we take $y = 1$ and $z = 1$, then we get the following eigenvectors:
+\[
+\left(
+\begin{array}{r}
+- \frac{4}{3} \\
+1 \\
+0 \\
+\end{array}
+\right)
+\text{and}
+\left(
+\begin{array}{r}
+\frac{1}{3} \\
+0 \\
+1 \\
+\end{array}
+\right)
+\]
+\end{document}

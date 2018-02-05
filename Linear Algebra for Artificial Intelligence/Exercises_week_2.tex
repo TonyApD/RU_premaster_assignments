@@ -1,0 +1,566 @@
+%
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+\usepackage{amsmath}
+% And some student asked me to include amsmath as well...
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+% The tikz package can be used to draw all kinds of diagrams.
+% In this assignment it is being used for drawing the parse trees
+
+
+\usepackage{xspace}
+% xspace can be used to let LaTeX decide whether a command should be followed
+% y a space or not, depending on what follows.
+
+% Some obscure definition to create a circled node within xy.
+% The definition is made by Freek Wiedijk who prefers to do his definitions
+% in TeX instead of LaTeX, which explains the \def instead of \newcommand.
+\def\node{*++[o][F-]}
+\def\fnode{*++[o][F=]}
+
+\usepackage{csquotes}
+\usepackage{mathtools}
+
+% This command puts a `def' on top of an `='.
+\newcommand{\isdef}{\ensuremath{\,\,\buildrel\rm def\over=}\,\,}
+
+\reversemarginpar
+\title{Linear Algebra for AI\\Assignment 2}
+
+% Replace the placeholders by your real name, student number and
+% group (for the exercise hours)
+\author{Tony Lopar \\ s1013792 \\ Group 5 \quad Felicity Reddel}
+
+% In LaTeX everything before \begin{document} is called pre-amble.
+% This is where you put all important settings. The real document
+% starts after \begin{document}.
+\begin{document}
+\maketitle
+
+\section*{Exercise 1}
+We are having the following linear equations: \\
+\begin{align*}
+x_1 + 2x_2 + 3x_3 + 4x_4 = 0 \\
+2x_1 + 4x_2 + 8x_3 + 12x_4 = 0 \\
+3x_1 + 6x_2 + 11x_3 + 17x_4 = 0
+\end{align*}
+
+In order to perform the Gaus-elimination on the matrix, we first have to put the values in an associated coefficient matrix.
+\[
+\left(
+\begin{array}{cccc|c}
+1 & 2 & 3 & 4 & 0   \\
+2 & 4 & 8 & 12 & 0  \\
+3 & 6 & 11 & 17 & 0 \\
+\end{array}
+\right)
+\]
+
+To find possible solutions, we should start try to get the matrix in echelon form.
+
+\[
+\left(
+\begin{array}{cccc|c}
+1 & 2 & 3 & 4 & 0   \\
+2 & 4 & 8 & 12 & 0  \\
+3 & 6 & 11 & 17 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := \frac{1}{2} R_2$}}
+\left(
+\begin{array}{cccc|c}
+1 & 2 & 3 & 4 & 0   \\
+1 & 2 & 4 & 6 & 0  \\
+3 & 6 & 11 & 17 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + (- 3) \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+1 & 2 & 3 & 4 & 0   \\
+1 & 2 & 4 & 6 & 0  \\
+0 & 0 & -1 & -1 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_2 := R_2 + (-1) \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+1 & 2 & 3 & 4 & 0   \\
+0 & 0 & 1 & 2 & 0  \\
+0 & 0 & -1 & -1 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + 1 \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+1 & 2 & 3 & 4 & 0   \\
+0 & 0 & 1 & 2 & 0  \\
+0 & 0 & 0 & 1 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_2 := R_2 + (-2) \cdot R_3$}}
+\left(
+\begin{array}{cccc|c}
+1 & 2 & 3 & 4 & 0   \\
+0 & 0 & 1 & 0 & 0  \\
+0 & 0 & 0 & 1 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + (-4) \cdot R_3$}}
+\left(
+\begin{array}{cccc|c}
+1 & 2 & 3 & 0 & 0   \\
+0 & 0 & 1 & 0 & 0  \\
+0 & 0 & 0 & 1 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 + (-3) \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+1 & 2 & 0 & 0 & 0   \\
+0 & 0 & 1 & 0 & 0  \\
+0 & 0 & 0 & 1 & 0 \\
+\end{array}
+\right)
+\]
+
+In the last matrix we see the following solutions for the values:
+\begin{align*}
+  x_1 + 2x_2 &= 0 \\
+  x_2 &= undefined \\
+  x_3 &= 0 \\
+  x_4 &= 0 \\
+\end{align*}
+
+Since the value for $x_2$ is undefined, we may choose a value for it. If we choose 2, then the value of $x_1$ will become -4 since it depends on $x_2$.
+
+% The system has only 1 basic solution, since there are 4 variables and three pivots left. In order to find the specific basic solution we may remove the columns without a pivot.
+% \[
+% \left(
+% \begin{array}{ccc|c}
+% 1 & 0 & 0 & 0   \\
+% 0 & 1 & 0 & 0  \\
+% 0 & 0 & 1 & 0 \\
+% \end{array}
+% \right)
+% \]
+The variables give the following basic solution: $(-4, 2, 0, 0)$. The particular solution can be found by removing the non-pivot columns. If we do this, we see that the particular function is the trivial function $(0, 0, 0, 0)$. This means that all solutions of the system are given by:
+\[
+(0, 0, 0, 0) + c_1 \cdot (-4, 2, 0, 0)
+\]
+
+\section*{Exercise 2}
+We have the following matrix in Echelon form: \\
+\[
+\left(
+\begin{array}{ccccc|c}
+2 & 3 & 1 & 2 & 1 & 1   \\
+0 & 0 & 4 & 1 & 1 & 2  \\
+0 & 0 & 0 & 0 & 2 & 6 \\
+\end{array}
+\right)
+\]
+
+In order to find the homogeneous solutions, we should convert the matrix to a homogeneous system. Herefore, we should replace the values at the right-hand side with 0.
+\[
+\left(
+\begin{array}{ccccc|c}
+2 & 3 & 1 & 2 & 1 & 0   \\
+0 & 0 & 4 & 1 & 1 & 0  \\
+0 & 0 & 0 & 0 & 2 & 0 \\
+\end{array}
+\right)
+\]
+
+We can see that this matrix has $5 - 3 = 2$ basic solutions, because there are 5 columns and three pivots. We can find the basic solutions by removing the non-pivot columns from the matrix. These are the second and third column. First we will remove the second row. This gives the following matrix:
+
+\[
+\left(
+\begin{array}{cccc}
+2 & 1 & 2 & 1   \\
+0 & 4 & 1 & 1  \\
+0 & 0 & 0 & 2 \\
+\end{array}
+\right)
+\text{with chosen solution $(x_1, x_3, x_4, x_5) = (\frac{7}{2}, 1, -4, 0)$}
+\]
+This gives the basic solution $(\frac{7}{2}, 0, 1, -4, 0)$.
+\[
+\left(
+\begin{array}{cccc}
+2 & 3 & 1 & 1   \\
+0 & 0 & 4 & 1  \\
+0 & 0 & 0 & 2 \\
+\end{array}
+\right)
+\text{with chosen solution $(x_1, x_2, x_3, x_5) = (3, -2, 0, 0)$}
+\]
+This gives the basic solution $(3, -2, 0, 0, 0)$. \\
+Now, let's try to solve the non-homogenious system. In order to find a particular solution we should remove all the non-pivot columns.
+\[
+\left(
+\begin{array}{ccc|c}
+2 & 1 & 1 & 1   \\
+0 & 4 & 1 & 2  \\
+0 & 0 & 2 & 6 \\
+\end{array}
+\right)
+\]
+
+From this matrix we can find the following solutions:
+\begin{align*}
+  2x_5 &= 6 \\
+  x_5 &= 3
+\end{align*}
+\begin{align*}
+  4x_3 + x_5 &= 2 \\
+  4x_3 &= 2 - x_5 \\
+  4x_3 &= 2 - 3 \\
+  4x_3 &= -1 \\
+  x_3 &= - \frac{1}{4}
+\end{align*}
+\begin{align*}
+  2x_1 + x_3 + x_5 &= 1 \\
+  2x_1 + - \frac{1}{4} + 3 &= 1 \\
+  2x_1 &= 1 + \frac{1}{4} - 3 \\
+  2x_1 &= - \frac{7}{4} \\
+  x_1 &= - \frac{7}{8}
+\end{align*}
+
+So, a particular solution of the system is $(- \frac{7}{8}, 0, - \frac{1}{4}, 0, 3)$. We can define all the solutions of the system by \\ $(x_1, x_2, x_3, x_4, x_5) = (- \frac{7}{8}, 0, - \frac{1}{4}, 0, 3) + c_1 (\frac{7}{2}, 0, 1, -4, 0) + \dots + c_2 (3, -2, 0, 0, 0)$.
+
+\section*{Exercise 3}
+% Find the values for the parameters a and b such that the following system of linear equations
+% • has a unique solution.
+% • has more than one solution.
+% • is inconsistent.
+% • Express the solutions in terms of the particular and basic solution(s) - thus when the system has
+% no unique solution.
+% Hint: Perform Gauss elimination where you keep the parameters a and b in the matrix. Distinguish
+% the number of pivots, depending on the values of a and b.
+\begin{align*}
+x_1 - x_2 + ax_3 &= 1 \\
+-2x_1 + x_2 + x_3 &= 2 \\
+x_1 - x_2 + x_3 &= b
+\end{align*}
+
+We can put this system of equations in the following augmented matrix. \\
+\[
+\left(
+\begin{array}{ccc|c}
+1 & -1 & a & 1   \\
+-2 & 1 & 1 & 2  \\
+1 & -1 & 1 & b \\
+\end{array}
+\right)
+\]
+On this matrix we should perform a gauss elimination:
+\[
+\left(
+\begin{array}{ccc|c}
+1 & -1 & a & 1   \\
+-2 & 1 & 1 & 2  \\
+1 & -1 & 1 & b \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + 2 \cdot R_1$}}
+\left(
+\begin{array}{ccc|c}
+1 & -1 & a & 1   \\
+0 & -1 & 1 + 2a & 3  \\
+1 & -1 & 1 & b \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + (-1) \cdot R_2$}}
+\left(
+\begin{array}{ccc|c}
+1 & 0 & - 1 - a & -2   \\
+0 & -1 & 1 + 2a & 3  \\
+1 & -1 & 1 & b \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_1$}}
+\left(
+\begin{array}{ccc|c}
+1 & 0 & - 1 - a & -2   \\
+0 & -1 & 1 + 2a & 3  \\
+0 & -1 & 2 + a & b + 2 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_2$}}
+\left(
+\begin{array}{ccc|c}
+1 & 0 & - 1 - a & -2   \\
+0 & -1 & 1 + 2a & 3  \\
+0 & 0 & 1 - a & b -1 \\
+\end{array}
+\right)
+\]
+
+\paragraph{Unique solution} We can find a unique solution by taking a = 0 and b = 3. This gives a unique solution since every value only gets one solution. These are $x_1 = 0, x_2 = -1, x_3 = 2$. These values are found by the following matrices:
+\[
+\left(
+\begin{array}{ccc|c}
+1 & 0 & - 1 & -2   \\
+0 & -1 & 1 & 3  \\
+0 & 0 & 1 & 2 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + (-1) \cdot R_3$}}
+\left(
+\begin{array}{ccc|c}
+1 & 0 & - 1 & -2   \\
+0 & -1 & 0 & 1  \\
+0 & 0 & 1 & 2 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + 1 \cdot R_3$}}
+\left(
+\begin{array}{ccc|c}
+1 & 0 & 0 & 0   \\
+0 & -1 & 0 & 1  \\
+0 & 0 & 1 & 2 \\
+\end{array}
+\right)
+\]
+\paragraph{Multiple solutions} We can find multiple solutions by taking a = 1 and b = 1. This gives the following solutions since there remain more variables in the matrix than the number of pivots. We could reduce the -2 in the first row which remains 3 variables. There is only one basic solution since there are two pivots. A possible basic solution to this system is: $(2, 3, 2)$ since this solution gives the correct results in the matrix below.
+\[
+\left(
+\begin{array}{ccc|c}
+1 & 0 & -2 & -2   \\
+0 & 1 & -3 & -3  \\
+0 & 0 & 0 & 0 \\
+\end{array}
+\right)
+\text{with chosen solution $(x_1, x_2, x_3) = (2, 3, 2)$}
+\]
+In order to find the particular solution we should remove the non-pivot column. If we do this we find the particular solution: $(-2, -3, 0)$.
+
+So we may express all solutions of the system by:
+\[
+(-2, -3, 0) + c_1(2, 3, 2)
+\]
+\paragraph{Inconsistent} In order to get an inconsistent solution we can take a = 1 and b = 2. In this case all the values before the line will be 0 and after line there is a value $\neq$ 0, so there are no solutions to the system and thus the result is inconsistent.
+\[
+\left(
+\begin{array}{ccc|c}
+1 & 0 & - 2 & -2   \\
+0 & -1 & 3& 3  \\
+0 & 0 & 0 & 1 \\
+\end{array}
+\right)
+\]
+
+\section*{Exercise 4}
+So the function should give the following results:
+\begin{align*}
+  f(-1) &= 10 \\
+  f(0) &= 4 \\
+  f(1) &= 2 \\
+  f(2) &= -2\\
+\end{align*}
+
+We should convert this function to the form: $f(x) = a_3x^3 + a_2x^2 + a_1x + a_0$. We know that $a_0 = 4$, because $f(0) = 4$ and $a_0$ doesnt depend on x.
+
+In order to find the values for $a_1, a_2$ and $a_3$ we should try to solve the equations using a matrix.
+\[
+\left(
+\begin{array}{cccc|c}
+-1  & 1   & -1  & 1 & 10  \\
+0   & 0   & 0   & 1 & 4   \\
+1   & 1   & 1   & 1 & 2  \\
+8   & 4   & 2   & 1 & -2  \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 \leftrightarrow R_4$}}
+\left(
+\begin{array}{cccc|c}
+-1  & 1   & -1  & 1 & 10  \\
+8   & 4   & 2   & 1 & -2  \\
+1   & 1   & 1   & 1 & 2  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 \leftrightarrow R_2$}}
+\left(
+\begin{array}{cccc|c}
+8   & 4   & 2   & 1 & -2  \\
+-1  & 1   & -1  & 1 & 10  \\
+1   & 1   & 1   & 1 & 2  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_2 := R_2 + 1 \cdot R_3$}}
+\left(
+\begin{array}{cccc|c}
+8   & 4   & 2   & 1 & -2  \\
+0   & 2   & 0   & 2 & 12  \\
+1   & 1   & 1   & 1 & 2  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := \frac{1}{2} \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+8   & 4   & 2   & 1 & -2  \\
+0   & 1   & 0   & 1 & 6  \\
+1   & 1   & 1   & 1 & 2  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + 1 \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+8   & 4   & 2   & 2 & 2  \\
+0   & 1   & 0   & 1 & 6  \\
+1   & 1   & 1   & 1 & 2  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := \frac{1}{2} \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+4   & 2   & 1   & 1 & 1  \\
+0   & 1   & 0   & 1 & 6  \\
+1   & 1   & 1   & 1 & 2  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + (-1) \cdot R_3$}}
+\left(
+\begin{array}{cccc|c}
+3   & 1   & 0   & 0 & -1  \\
+0   & 1   & 0   & 1 & 6  \\
+1   & 1   & 1   & 1 & 2  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 + (-1) \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+3   & 0   & 0   & -1 & -7  \\
+0   & 1   & 0   & 1 & 6  \\
+1   & 1   & 1   & 1 & 2  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+3   & 0   & 0   & -1 & -7  \\
+0   & 1   & 0   & 1 & 6  \\
+1   & 0   & 1   & 0 & -4  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 + 1 \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+3   & 0   & 0   & 0 & -3  \\
+0   & 1   & 0   & 1 & 6  \\
+1   & 0   & 1   & 0 & -4  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := \frac{1}{3} 1 \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+1   & 0   & 0   & 0 & -1  \\
+0   & 1   & 0   & 1 & 6  \\
+1   & 0   & 1   & 0 & -4  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+1   & 0   & 0   & 0 & -1  \\
+0   & 1   & 0   & 1 & 6  \\
+0   & 0   & 1   & 0 & -3  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + (-1) \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1   & 0   & 0   & 0 & -1  \\
+0   & 1   & 0   & 0 & 2  \\
+0   & 0   & 1   & 0 & -3  \\
+0   & 0   & 0   & 1 & 4   \\
+\end{array}
+\right)
+\]
+
+This leads to the following function:
+\[f(x) = -1x^3 + 2x^2 + -3x + 4\]
+
+If we check the values in the original equations, we see that the formula is correct:
+\begin{align*}
+  f(-1) &= -1 \cdot -1^3 + 2 \cdot -1^2 + -3 \cdot -1 + 4 &= 1 + 2 + 3 + 4 &= 10  \\
+  f(0) &= -1 \cdot 0^3 + 2 \cdot 0^2 + -3 \cdot 0 + 4 &= 0 + 0 + 0 + 4 &= 4       \\
+  f(1) &= -1 \cdot 1^3 + 2 \cdot 1^2 + -3 \cdot 1 + 4 &= -1 + 2 - 3 + 4 &= 2      \\
+  f(2) &= -1 \cdot 2^3 + 2 \cdot 2^2 + -3 \cdot 2 + 4 &= -8 + 8 - 6 + 4 &= -2  \\
+\end{align*}
+
+
+\end{document}

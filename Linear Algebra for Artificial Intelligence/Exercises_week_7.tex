@@ -1,0 +1,501 @@
+%
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+\usepackage{amsmath}
+% And some student asked me to include amsmath as well...
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+% The tikz package can be used to draw all kinds of diagrams.
+% In this assignment it is being used for drawing the parse trees
+
+
+\usepackage{xspace}
+% xspace can be used to let LaTeX decide whether a command should be followed
+% y a space or not, depending on what follows.
+
+% Some obscure definition to create a circled node within xy.
+% The definition is made by Freek Wiedijk who prefers to do his definitions
+% in TeX instead of LaTeX, which explains the \def instead of \newcommand.
+\def\node{*++[o][F-]}
+\def\fnode{*++[o][F=]}
+
+\usepackage{csquotes}
+\usepackage{mathtools}
+\usepackage{cancel}
+
+% This command puts a `def' on top of an `='.
+\newcommand{\isdef}{\ensuremath{\,\,\buildrel\rm def\over=}\,\,}
+
+\reversemarginpar
+\title{Linear Algebra for AI\\Assignment 7}
+
+\author{Tony Lopar \\ s1013792 \\ Group 5 \quad Felicity Reddel}
+
+\begin{document}
+\maketitle
+
+\section*{Exercise 1}
+The transition matrix of the frog is as follows:
+\[ P =
+\left(
+\begin{array}{ccc}
+0.8 & 0.2 & 0.25 \\
+0.1 & 0.6 & 0.5  \\
+0.1 & 0.2 & 0.25 \\
+\end{array}
+\right)
+=
+\frac{1}{10}
+\left(
+\begin{array}{ccc}
+8 & 2 & \frac{5}{2} \\
+1 & 6 & 5  \\
+1 & 2 & \frac{5}{2} \\
+\end{array}
+\right)
+\]
+
+The probability that the frog is put on $L_1$ is $50 \%$ and that the frog is put on $L_3$ is $10 \%$. This means that there is a probability of $40 \%$ left that the frog is put on $L_2$.
+
+In order to compute the transitions in two years, we should compute $P^2$.
+\begin{align*}
+\frac{1}{10}
+\left(
+\begin{array}{ccc}
+8 & 2 & \frac{5}{2} \\
+1 & 6 & 5  \\
+1 & 2 & \frac{5}{2} \\
+\end{array}
+\right)
+\cdot
+\frac{1}{10}
+\left(
+\begin{array}{ccc}
+8 & 2 & \frac{5}{2} \\
+1 & 6 & 5  \\
+1 & 2 & \frac{5}{2} \\
+\end{array}
+\right)
+&=
+\frac{1}{100}
+\left(
+\begin{array}{ccc}
+68.5 & 33 & 36.25 \\
+19 & 48 & 45  \\
+12.5 & 19 & 18.75 \\
+\end{array}
+\right)
+\end{align*}
+
+The probability that the frog is after one iteration on a certain lilly is:
+\begin{align*}
+\frac{1}{100}
+\left(
+\begin{array}{ccc}
+68.5 & 33 & 36.25 \\
+19 & 48 & 45  \\
+12.5 & 19 & 18.75 \\
+\end{array}
+\right)
+\cdot
+\frac{1}{10}
+\left(
+\begin{array}{c}
+5 \\
+4 \\
+1 \\
+\end{array}
+\right)
+&=
+\frac{1}{1000}
+\left(
+\begin{array}{c}
+510.75 \\
+332 \\
+157.25 \\
+\end{array}
+\right)
+\end{align*}
+
+We may use the probabilities from the first iteration to compute the probabilities in the second iteration.
+
+Now we see that the probability that the frog is on $L_2$ after two iterations is $33.2\%$.
+
+\section*{Exercise 2}
+\begin{enumerate}
+  \item First, we will compute the eigenvalues and eigenvectors of matrix A. Therefore, we will first give the characteristic polynomial.
+  \begin{align*}
+  \left|
+  \begin{array}{cc}
+  0.7 - \lambda & 0.2 \\
+  0.3 & 0.8 - \lambda \\
+  \end{array}
+  \right|
+  \end{align*}
+  From the polynomial we get the following characteristic equation:
+  \begin{align*}
+    (0.7 - \lambda)(0.8 - \lambda) - 0.2 \cdot 0.3 &= 0 \\
+    \lambda^2 - 0.8 \lambda - 0.7 \lambda + 0.56 - 0.06 &= 0 \\
+    \lambda^2 - 1.5 \lambda + 0.50 &= 0 \\
+    (\lambda - 1)(\lambda - 0,5) \\
+    \lambda = 1 \lor \lambda = 0.5
+  \end{align*}
+  We see that the eigenvalues are 1 and 0.5. Now we can compute the eigenvectors. I will start with the eigenvector for $\lambda = 1$:
+  \begin{align*}
+    (A - 1 \cdot I) &=
+    \frac{1}{10}
+    \left(
+    \begin{array}{cc}
+    7 - 10 & 2 \\
+    3 & 8 - 10 \\
+    \end{array}
+    \right) \\
+    &=
+    \frac{1}{10}
+    \left(
+    \begin{array}{cc}
+    -3 & 2 \\
+    3 & -2 \\
+    \end{array}
+    \right)
+  \end{align*}
+  The corresponding system of equations will be:
+  \begin{align*}
+    -3x + 2y &= 0 \\
+    3x - 2y &= 0
+  \end{align*}
+  We see that we can pick $x = 2$ and $y = 3$. This gives the following eigenvector for $\lambda = 1$:
+  \[
+  \left(
+  \begin{array}{c}
+  2 \\
+  3 \\
+  \end{array}
+  \right) \\
+  \]
+
+  Next, we will compute the eigenvector for $\lambda = 0.5$.
+  \begin{align*}
+    (A - 0.5 \cdot I) &=
+    \frac{1}{10}
+    \left(
+    \begin{array}{cc}
+    7 - 5 & 2 \\
+    3 & 8 - 5 \\
+    \end{array}
+    \right) \\
+    &=
+    \frac{1}{10}
+    \left(
+    \begin{array}{cc}
+    2 & 2 \\
+    3 & 3 \\
+    \end{array}
+    \right)
+  \end{align*}
+  The corresponding system of equations will be:
+  \begin{align*}
+    2x + 2y &= 0 \\
+    3x + 3y &= 0
+  \end{align*}
+  We see that we can pick $x = 1$ and $y = -1$. This gives the following eigenvector for $\lambda = 0.5$:
+  \[
+  \left(
+  \begin{array}{c}
+  -1 \\
+  1 \\
+  \end{array}
+  \right) \\
+  \]
+  \item In order to find the representation of A in the eigenvector basis we need to tranform the matrix to the eigenvector basis. Therefore, we should compute the transformation matrix from standard basis to eigenvector basis.
+  \[
+  \left(
+  \begin{array}{cc}
+  1 & 0 \\
+  0 & \frac{1}{2} \\
+  \end{array}
+  \right)
+  \]
+  \item In order to compute the second iteration of A, we should first compute the transformation from eigenvector basis to standard basis and it's inverse. Furthermore, we should use the representation of A in eigenvector basis as given in 2.2. The second iteration of the political swingers matrix will be
+  \[
+  T_{V \Rightarrow B} =
+  \left(
+  \begin{array}{cc}
+  2 & -1 \\
+  3 & 1 \\
+  \end{array}
+  \right), \enspace
+  T_{B \Rightarrow V} = T_{V \Rightarrow B}^{-1} =
+  \frac{1}{2 \cdot 1 - 3 \cdot - 1}
+  \left(
+  \begin{array}{cc}
+  1 & 1 \\
+  -3 & 2 \\
+  \end{array}
+  \right)
+  =
+  \frac{1}{5}
+  \left(
+  \begin{array}{cc}
+  1 & 1 \\
+  -3 & 2 \\
+  \end{array}
+  \right)
+  \]
+  Now we know these transformation matrices we may compute $A^2$ by combining them with the eigenvector representation of A.
+  \begin{align*}
+    A^2 &= T_{V \Rightarrow B} \cdot
+    \left(
+    \begin{array}{cc}
+    1^2 & 0 \\
+    0 & \frac{1}{2}^2 \\
+    \end{array}
+    \right)
+    \cdot T_{B \Rightarrow V} \\
+    &=
+    \left(
+    \begin{array}{cc}
+    2 & -1 \\
+    3 & 1 \\
+    \end{array}
+    \right) \cdot
+    \left(
+    \begin{array}{cc}
+    1 & 0 \\
+    0 & \frac{1}{4} \\
+    \end{array}
+    \right) \cdot
+    \frac{1}{5}
+    \left(
+    \begin{array}{cc}
+    1 & 1 \\
+    -3 & 2 \\
+    \end{array}
+    \right) \\
+    &=
+    \left(
+    \begin{array}{cc}
+    2 & -\frac{1}{4} \\
+    3 & 1 \\
+    \end{array}
+    \right) \cdot
+    \frac{1}{5}
+    \left(
+    \begin{array}{cc}
+    1 & 1 \\
+    -3 & 2 \\
+    \end{array}
+    \right) \\
+    &=
+    \frac{1}{5}
+    \left(
+    \begin{array}{cc}
+    \frac{11}{4} & \frac{3}{2} \\
+    0 & 5 \\
+    \end{array}
+    \right)
+  \end{align*}
+  \item When the number of iterations goes to infinity the values below 1 in the eigenvalue matrix will come so close to 0 that they will be omitted.
+  \begin{align*}
+    \lim_{n\to\infty} P^n &= \lim_{n\to\infty} T_{V \Rightarrow B} \cdot
+    \left(
+    \begin{array}{cc}
+    1^n & 0 \\
+    0 & \frac{1}{2}^n \\
+    \end{array}
+    \right) \cdot T_{B \Rightarrow V} \\
+    &= T_{V \Rightarrow B} \cdot
+    \left(
+    \begin{array}{cc}
+    1 & 0 \\
+    0 & 0 \\
+    \end{array}
+    \right) \cdot T_{B \Rightarrow V} \\
+    &=
+    \left(
+    \begin{array}{cc}
+    2 & -1 \\
+    3 & 1 \\
+    \end{array}
+    \right) \cdot
+    \left(
+    \begin{array}{cc}
+    1 & 0 \\
+    0 & 0 \\
+    \end{array}
+    \right) \cdot
+    \frac{1}{5}
+    \left(
+    \begin{array}{cc}
+    1 & 1 \\
+    -3 & 2 \\
+    \end{array}
+    \right) \\
+    &=
+    \left(
+    \begin{array}{cc}
+    2 & 0 \\
+    3 & 0 \\
+    \end{array}
+    \right) \cdot
+    \frac{1}{5}
+    \left(
+    \begin{array}{cc}
+    1 & 1 \\
+    -3 & 2 \\
+    \end{array}
+    \right) \\
+    &=
+    \frac{1}{5}
+    \left(
+    \begin{array}{cc}
+    2 & 2 \\
+    3 & 3 \\
+    \end{array}
+    \right)
+  \end{align*}
+  \item Using the limit computed in exercise 2.4 we may compute the equilibrium by multiplying the limit by the matrix with the starting values.
+  \[
+  \frac{1}{5}
+  \left(
+  \begin{array}{cc}
+  2 & 2 \\
+  3 & 3 \\
+  \end{array}
+  \right)
+  \cdot
+  \left(
+  \begin{array}{c}
+  100 \\
+  250 \\
+  \end{array}
+  \right)
+  =
+  \frac{1}{5}
+  \left(
+  \begin{array}{c}
+  700 \\
+  1050 \\
+  \end{array}
+  \right)
+  =
+  \left(
+  \begin{array}{c}
+  140 \\
+  210 \\
+  \end{array}
+  \right)
+  \]
+\end{enumerate}
+
+\section*{Exercise 3}
+\begin{enumerate}
+  \item Both vectors a and b are in the third dimensional space. This means that the intuitive lengths can be computed by Pythagoras.
+  \begin{align*}
+    ||a|| &= \sqrt{-1^2 + 3^2 + -7^2} \\
+          &= \sqrt{1 + 9 + 49} \\
+          &= \sqrt{59} \\
+          &\approx 7.7 \\
+    ||b|| &= \sqrt{2^2 + -1^2 + 5^2} \\
+          &= \sqrt{4 + 1 + 25} \\
+          &= \sqrt{30} \\
+          &\approx 5.5
+  \end{align*}
+  \item First I will compute the innerproducts of two vectors by vector multiplication. After this, these values will be filled in the original equation.
+  \begin{align*}
+    \langle a, b \rangle &= -1 \cdot 2 + 3 \cdot -1 + -7 \cdot 5 &= -2 -3 - 35 &= -40 \\
+    \langle c, b \rangle &= 0 \cdot 2 + 1 \cdot -1 + 5 \cdot 5 &= 0 - 1 + 25 &= 24 \\
+    \langle b, c \rangle &= 2 \cdot 0 + -1 \cdot 1 + 5 \cdot 5 &= 0 - 1 + 25 &= 24 \\
+    \langle -b, a \rangle &= -2 \cdot -1 + 1 \cdot 3 + -5 \cdot -7 &= 2 + 3 + 35 &= 40
+  \end{align*}
+  Now we may fill in the original equation.
+  \begin{align*}
+    (2 \langle a, b \rangle + \langle c, b \rangle)(2 \langle b, c \rangle + \langle −b, a \rangle) &=
+    (2 \cdot -40 + 24)(2 \cdot 24 + 40) \\
+    &= (-80 + 24)(48 + 40) \\
+    &= -56 \cdot 88 \\
+    &= -4928
+  \end{align*}
+\end{enumerate}
+
+\section*{Exercise 4}
+% Suppose I live in a 2-dimensional world. I am currently in position (2, 1), facing in the direction
+% (−1, −1). There is a tree at location (1, 1). Where, i.e. at what angle, is the tree relative to me? Use
+% vector algebra, especially the inner-product to compute this angle (Compute cos(θ) and subsequently
+% use the arccos to get the angle in radians or degrees).
+\[
+\text{The direction vector V is: } V =
+\left(
+\begin{array}{c}
+1 \\
+1 \\
+\end{array}
+\right)
+-
+\left(
+\begin{array}{c}
+2 \\
+1 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+-1 \\
+0 \\
+\end{array}
+\right)
+\]
+Now we need to compute the angle $\theta$. First, we may compute the $cos(\theta)$ using the inner product.
+\begin{align*}
+  cos(\theta) &= \frac{\langle D, V \rangle}{||D|| \cdot ||V||} \\
+              &= \frac{-1 \cdot -1 + -1 \cdot 0}{\sqrt{-1^2 + -1^2} \cdot \sqrt{-1^2 + 0^2}} \\
+              &= \frac{1}{\sqrt{2} \cdot \sqrt{1}} \\
+              &= \frac{1}{\sqrt{2} \cdot 1} \\
+              &= \frac{1}{\sqrt{2}}
+\end{align*}
+
+This results in the fact that the tree is 0.79 radians($45^\circ$) relative to me.
+
+\end{document}

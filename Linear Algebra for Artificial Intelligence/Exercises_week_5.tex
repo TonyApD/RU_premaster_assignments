@@ -1,0 +1,566 @@
+%
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+\usepackage{amsmath}
+% And some student asked me to include amsmath as well...
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+% The tikz package can be used to draw all kinds of diagrams.
+% In this assignment it is being used for drawing the parse trees
+
+
+\usepackage{xspace}
+% xspace can be used to let LaTeX decide whether a command should be followed
+% y a space or not, depending on what follows.
+
+% Some obscure definition to create a circled node within xy.
+% The definition is made by Freek Wiedijk who prefers to do his definitions
+% in TeX instead of LaTeX, which explains the \def instead of \newcommand.
+\def\node{*++[o][F-]}
+\def\fnode{*++[o][F=]}
+
+\usepackage{csquotes}
+\usepackage{mathtools}
+\usepackage{cancel}
+
+% This command puts a `def' on top of an `='.
+\newcommand{\isdef}{\ensuremath{\,\,\buildrel\rm def\over=}\,\,}
+
+\reversemarginpar
+\title{Linear Algebra for AI\\Assignment 5}
+
+\author{Tony Lopar \\ s1013792 \\ Group 5 \quad Felicity Reddel}
+
+\begin{document}
+\maketitle
+
+\section*{Exercise 1}
+\begin{enumerate}[i)]
+  \item In order to find the inverse I augmented the matrix with the identity matrix. If the original matrix has n pivots in Echelon form, there is an inverse and we may find the inverse by continuing to reduced Echelon form and take the augmented matrix.
+  \[
+  \left(
+  \begin{array}{ccc|ccc}
+  1 & -1 & 2 & 1 & 0 & 0 \\
+  1 & 1 & -2 & 0 & 1 & 0 \\
+  1 & 1 & 4  & 0 & 0 & 1 \\
+  \end{array}
+  \right)
+  \xrightarrow{\text{$R_1 := R_1 + 1 \cdot R_2$}}
+  \left(
+  \begin{array}{ccc|ccc}
+  2 & 0 & 0 & 1 & 1 & 0 \\
+  1 & 1 & -2 & 0 & 1 & 0 \\
+  1 & 1 & 4  & 0 & 0 & 1 \\
+  \end{array}
+  \right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 + - \frac{1}{2} \cdot R_1$}}
+\left(
+\begin{array}{ccc|ccc}
+2 & 0 & 0 & 1 & 1 & 0 \\
+1 & 1 & -2 & 0 & 1 & 0 \\
+0 & 1 & 4  & - \frac{1}{2} & - \frac{1}{2} & 1 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + - \frac{1}{2} \cdot R_1$}}
+\left(
+\begin{array}{ccc|ccc}
+2 & 0 & 0 & 1 & 1 & 0 \\
+0 & 1 & -2 & - \frac{1}{2} & \frac{1}{2} & 0 \\
+0 & 1 & 4  & - \frac{1}{2} & - \frac{1}{2} & 1 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_2$}}
+\left(
+\begin{array}{ccc|ccc}
+2 & 0 & 0 & 1 & 1 & 0 \\
+0 & 1 & -2 & - \frac{1}{2} & \frac{1}{2} & 0 \\
+0 & 0 & 6  & 0 & - 1 & 1 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := \frac{1}{6} R_3$}}
+\left(
+\begin{array}{ccc|ccc}
+2 & 0 & 0 & 1 & 1 & 0 \\
+0 & 1 & -2 & - \frac{1}{2} & \frac{1}{2} & 0 \\
+0 & 0 & 1  & 0 & - \frac{1}{6} & \frac{1}{6} \\
+\end{array}
+\right)
+\]
+Now we see that the system has n pivots, we may continue to the Echelon form to find the inverse.
+\[
+\xrightarrow{\text{$R_2 := R_2 + 2 \cdot R_3$}}
+\left(
+\begin{array}{ccc|ccc}
+2 & 0 & 0 & 1 & 1 & 0 \\
+0 & 1 & 0 & - \frac{1}{2} & \frac{1}{6} & \frac{1}{3} \\
+0 & 0 & 1  & 0 & - \frac{1}{6} & \frac{1}{6} \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := \frac{1}{2} R_1$}}
+\left(
+\begin{array}{ccc|ccc}
+1 & 0 & 0 & \frac{1}{2} & \frac{1}{2} & 0 \\
+0 & 1 & 0 & - \frac{1}{2} & \frac{1}{6} & \frac{1}{3} \\
+0 & 0 & 1  & 0 & - \frac{1}{6} & \frac{1}{6} \\
+\end{array}
+\right)
+\]
+Now we see that the inverse of the matrix A is as follows:
+\[
+A^{-1} =
+\left(
+\begin{array}{ccc}
+\frac{1}{2} & \frac{1}{2} & 0 \\
+- \frac{1}{2} & \frac{1}{6} & \frac{1}{3} \\
+0 & - \frac{1}{6} & \frac{1}{6} \\
+\end{array}
+\right)
+\]
+  \item In order to find the possible inverse I will augment matrix B with the identity matrix like I did with matrix A.
+  \[
+  \left(
+  \begin{array}{ccc|ccc}
+  1 & -1 & 2 & 1 & 0 & 0 \\
+  1 & 1 & -2 & 0 & 1 & 0 \\
+  2 & -1 & 2  & 0 & 0 & 1 \\
+  \end{array}
+  \right)
+  \xrightarrow{\text{$R_1 := R_1 +  1 \cdot R_2$}}
+  \left(
+  \begin{array}{ccc|ccc}
+  2 & 0 & 0 & 1 & 1 & 0 \\
+  1 & 1 & -2 & 0 & 1 & 0 \\
+  2 & -1 & 2  & 0 & 0 & 1 \\
+  \end{array}
+  \right)
+  \]
+  \[
+  \xrightarrow{\text{$R_1 := \frac{1}{2} R_1$}}
+  \left(
+  \begin{array}{ccc|ccc}
+  1 & 0 & 0 & \frac{1}{2} & \frac{1}{2} & 0 \\
+  1 & 1 & -2 & 0 & 1 & 0 \\
+  2 & -1 & 2  & 0 & 0 & 1 \\
+  \end{array}
+  \right)
+  \xrightarrow{\text{$R_2 := R_2 + (-1) \cdot R_1$}}
+  \left(
+  \begin{array}{ccc|ccc}
+  1 & 0 & 0 & \frac{1}{2} & \frac{1}{2} & 0 \\
+  0 & 1 & -2 & - \frac{1}{2} & \frac{1}{2} & 0 \\
+  2 & -1 & 2  & 0 & 0 & 1 \\
+  \end{array}
+  \right)
+  \]
+  \[
+  \xrightarrow{\text{$R_3 := R_3 + (-2) \cdot R_1$}}
+  \left(
+  \begin{array}{ccc|ccc}
+  1 & 0 & 0 & \frac{1}{2} & \frac{1}{2} & 0 \\
+  0 & 1 & -2 & - \frac{1}{2} & \frac{1}{2} & 0 \\
+  0 & -1 & 2  & -1 & -1 & 1 \\
+  \end{array}
+  \right)
+  \xrightarrow{\text{$R_3 := R_3 + 1 \cdot R_2$}}
+  \left(
+  \begin{array}{ccc|ccc}
+  1 & 0 & 0 & \frac{1}{2} & \frac{1}{2} & 0 \\
+  0 & 1 & -2 & - \frac{1}{2} & \frac{1}{2} & 0 \\
+  0 & 0 & 0  & - \frac{3}{2} & - \frac{1}{2} & 1 \\
+  \end{array}
+  \right)
+  \]
+  We see that the echelon form has less than n pivots which means that there is no inverse for matrix B.
+\end{enumerate}
+
+\section*{Exercise 2}
+In order to find a value for which the matrix doesn't have an inverse, we should find a value for which the matrix doesn't have a unique solution. A possible option may be to take a = 0.6, since this gives two equal columns which means the system has multiple solutions possible and thus there is no inverse. So taking a = 0.6 will give the following system:
+\[
+\left(
+\begin{array}{cc}
+0.6 & 0.6 \\
+0.4 & 0.4 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + - \frac{2}{3} \cdot R_1$}}
+\left(
+\begin{array}{cc}
+0.6 & 0.6 \\
+0 & 0 \\
+\end{array}
+\right)
+\]
+This shows that the system has less than n pivots which means that there is no inverse.
+
+\section*{Exercise 3}
+% Consider the following two bases in R2: B = {u1, u2} = {(1, 2),(3, 5)} and R2: C = {v1, v2} ={(1, −1),(1, −2)}
+\begin{enumerate}
+  \item The basis transformation matrix $Q = T_{C \Rightarrow B}$ can be computed as follows.
+%   Given an a and b we need to find a' and b' such that:
+%   $[a', b']_C = [a, b]_B$.
+%   This can be witten as:
+%   \[
+%   a' \cdot (1, -1) + b' \cdot (1, -2) = a \cdot (1, 2) + b \cdot (3, 5)
+%   \]
+%   Which is written as matrix-vector multiplication like:
+% \[
+% \left(
+% \begin{array}{cc}
+% 1 & 1 \\
+% -1 & -2 \\
+% \end{array}
+% \right)
+% \cdot
+% \left(
+% \begin{array}{c}
+% a' \\
+% b' \\
+% \end{array}
+% \right)
+% =
+% \left(
+% \begin{array}{cc}
+% 1 & 3 \\
+% 2 & 5 \\
+% \end{array}
+% \right)
+% \cdot
+% \left(
+% \begin{array}{c}
+% a \\
+% b \\
+% \end{array}
+% \right)
+% \]
+% This can be solved using matrix multiplication:
+% \[
+% \left(
+% \begin{array}{c}
+% a' \\
+% b' \\
+% \end{array}
+% \right)
+% =
+% \left(
+% \begin{array}{cc}
+% 1 & 1 \\
+% -1 & -2 \\
+% \end{array}
+% \right)^{-1}
+% \cdot
+% \left(
+% \begin{array}{cc}
+% 1 & 3 \\
+% 2 & 5 \\
+% \end{array}
+% \right)
+% \cdot
+% \left(
+% \begin{array}{c}
+% a \\
+% b \\
+% \end{array}
+% \right)
+% \]
+If we put the vectors of bases B and C into matrices, we may compute the transformation matrix with the following computation:
+\[
+Q =
+\left(
+\begin{array}{cc}
+1 & 3 \\
+2 & 5 \\
+\end{array}
+\right)^{-1}
+\cdot
+\left(
+\begin{array}{cc}
+1 & 1 \\
+-1 & -2 \\
+\end{array}
+\right)
+\]
+Using the solution for 2x2 matrices from the slides, we find the following inverse for B.
+\[
+A_B^{-1} =
+\frac{1}{1 \cdot 5 - 3 \cdot 2} \cdot
+\left(
+\begin{array}{cc}
+5 & -3 \\
+-2 & 1 \\
+\end{array}
+\right)
+=
+-1 \cdot
+\left(
+\begin{array}{cc}
+5 & -3 \\
+-2 & 1 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{cc}
+-5 & 3 \\
+2 & -1 \\
+\end{array}
+\right)
+\]
+This gives that P is defined as the following matrix:
+\begin{align*}
+Q &=
+\left(
+\begin{array}{cc}
+-5 & 3 \\
+2 & -1 \\
+\end{array}
+\right)
+\cdot
+\left(
+\begin{array}{cc}
+1 & 1 \\
+-1 & -2 \\
+\end{array}
+\right) \\
+&=
+\left(
+\begin{array}{cc}
+-8 & -11 \\
+3 & 4 \\
+\end{array}
+\right)
+\end{align*}
+
+  \item The basis transformation matrix $P = T_{B \Rightarrow C}$ can be computed by multiplying the inverse of B with matrix C.
+  \[
+  P =
+  \left(
+  \begin{array}{cc}
+  1 & 1 \\
+  -1 & -2 \\
+  \end{array}
+  \right)^{-1}
+  \cdot
+  \left(
+  \begin{array}{cc}
+  1 & 3 \\
+  2 & 5 \\
+  \end{array}
+  \right)
+  \]
+  Using the solution for 2x2 matrices from the slides, we find the following inverse for C.
+  \[
+  A_C^{-1} =
+  \frac{1}{1 \cdot -2 - 1 \cdot -1} \cdot
+  \left(
+  \begin{array}{cc}
+  -2 & -1 \\
+  1 & 1 \\
+  \end{array}
+  \right)
+  =
+  -1 \cdot
+  \left(
+  \begin{array}{cc}
+  -2 & -1 \\
+  1 & 1 \\
+  \end{array}
+  \right)
+  =
+  \left(
+  \begin{array}{cc}
+  2 & 1 \\
+  -1 & -1 \\
+  \end{array}
+  \right)
+  \]
+  This gives that Q is defined as the following matrix:
+  \begin{align*}
+  P &=
+  \left(
+  \begin{array}{cc}
+  2 & 1 \\
+  -1 & -1 \\
+  \end{array}
+  \right)
+  \cdot
+  \left(
+  \begin{array}{cc}
+  1 & 3 \\
+  2 & 5 \\
+  \end{array}
+  \right) \\
+  &=
+  \left(
+  \begin{array}{cc}
+  4 & 11 \\
+  -3 & -8 \\
+  \end{array}
+  \right)
+  \end{align*}
+  \item First, I will compute $Q \cdot P$:
+  \begin{align*}
+  \left(
+  \begin{array}{cc}
+  -8 & -11 \\
+  3 & 4 \\
+  \end{array}
+  \right)
+  \cdot
+  \left(
+  \begin{array}{cc}
+  4 & 11 \\
+  -3 & -8 \\
+  \end{array}
+  \right)
+  &=
+  \left(
+  \begin{array}{cc}
+  1 & 0 \\
+  0 & 1 \\
+  \end{array}
+  \right)
+  \end{align*}
+  Now I will compute $P \cdot Q$:
+  \begin{align*}
+  \left(
+  \begin{array}{cc}
+  4 & 11 \\
+  -3 & -8 \\
+  \end{array}
+  \right)
+  \cdot
+  \left(
+  \begin{array}{cc}
+  -8 & -11 \\
+  3 & 4 \\
+  \end{array}
+  \right)
+  &=
+  \left(
+  \begin{array}{cc}
+  1 & 0 \\
+  0 & 1 \\
+  \end{array}
+  \right)
+  \end{align*}
+  \item The matrix $A_C$ can be computed with the matrices given in the exercise and the computed matrices P and Q. $A_C = T_{B \Rightarrow C} \cdot A_B \cdot T_{C \Rightarrow B}$.
+  \begin{align*}
+  A_C &= P \cdot A_B \cdot Q \\
+  &=
+  \left(
+  \begin{array}{cc}
+  4 & 11 \\
+  -3 & -8 \\
+  \end{array}
+  \right)
+  \cdot
+  \left(
+  \begin{array}{cc}
+  35 & 88 \\
+  -12 & -30 \\
+  \end{array}
+  \right)
+  \cdot
+  \left(
+  \begin{array}{cc}
+  -8 & -11 \\
+  3 & 4 \\
+  \end{array}
+  \right) \\
+  &=
+  \left(
+  \begin{array}{cc}
+  8 & 22 \\
+  -9 & -24 \\
+  \end{array}
+  \right)
+  \cdot
+  \left(
+  \begin{array}{cc}
+  -8 & -11 \\
+  3 & 4 \\
+  \end{array}
+  \right) \\
+  &=
+  \left(
+  \begin{array}{cc}
+  2 & 0 \\
+  0 & 3 \\
+  \end{array}
+  \right)
+  \end{align*}
+\end{enumerate}
+
+\section*{Exercise 4}
+If we first map and then basis transform this will give the following situation:
+\[
+x_B \xrightarrow{A_B} y_B \xrightarrow{T_{B \Rightarrow C}} y_C
+\]
+This shows us that $y_B = A_B \cdot x_B$ and that $y_C = T_{B \Rightarrow C} \cdot y_B = T_{B \Rightarrow C} \cdot A_B \cdot x_B$.
+
+Next, we will first transform and map the vector afterwards. This will give the following transformations:
+\[
+x_B \xrightarrow{T_{B \Rightarrow C}} x_C \xrightarrow{A_C} y_C
+\]
+
+This shows us that $x_C = T_{B \Rightarrow C} \cdot x_B$ and $y_C = A_C \cdot x_C = A_C \cdot T_{B \Rightarrow C} \cdot x_B$.
+\newline
+\newline
+Combining these two solutions gives us that:
+\begin{align*}
+  y_C &= y_C \\
+  A_C \cdot T_{B \Rightarrow C} &= T_{B \Rightarrow C} \cdot A_B
+  \end{align*}
+  Multiplying by the inverse of $T_{B \Rightarrow C}$ to get only $A_C$ on the left of the equation:
+  \begin{align*}
+  A_C \cdot T_{B \Rightarrow C} \cdot {T_{B \Rightarrow C}}^{-1} &= T_{B \Rightarrow C} \cdot A_B \cdot {T_{B \Rightarrow C}}^{-1} \\
+  A_C \cdot \cancel{T_{B \Rightarrow C} \cdot {T_{B \Rightarrow C}}^{-1}} &= T_{B \Rightarrow C} \cdot A_B \cdot T_{C \Rightarrow B} \\
+  A_C &= T_{B \Rightarrow C} \cdot A_B \cdot T_{C \Rightarrow B} \\
+\end{align*}
+
+\end{document}

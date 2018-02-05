@@ -1,0 +1,196 @@
+%
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+\usepackage{amsmath}
+% And some student asked me to include amsmath as well...
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+% The tikz package can be used to draw all kinds of diagrams.
+% In this assignment it is being used for drawing the parse trees
+
+
+\usepackage{xspace}
+% xspace can be used to let LaTeX decide whether a command should be followed
+% y a space or not, depending on what follows.
+
+% Some obscure definition to create a circled node within xy.
+% The definition is made by Freek Wiedijk who prefers to do his definitions
+% in TeX instead of LaTeX, which explains the \def instead of \newcommand.
+\def\node{*++[o][F-]}
+\def\fnode{*++[o][F=]}
+
+\usepackage{csquotes}
+\usepackage{mathtools}
+\usepackage{cancel}
+
+% This command puts a `def' on top of an `='.
+\newcommand{\isdef}{\ensuremath{\,\,\buildrel\rm def\over=}\,\,}
+
+\reversemarginpar
+\title{Linear Algebra for AI\\Assignment 8}
+
+\author{Tony Lopar \\ s1013792 \\ Group 5 \quad Felicity Reddel}
+
+\begin{document}
+\maketitle
+
+% \left(
+% \begin{array}{ccc}
+% 8 & 2 & \frac{5}{2} \\
+% 1 & 6 & 5  \\
+% 1 & 2 & \frac{5}{2} \\
+% \end{array}
+% \right)
+
+\section*{Exercise 1}
+\[
+v =
+\left(
+\begin{array}{c}
+2 \\
+3 \\
+-6 \\
+\end{array}
+\right)
+\enspace
+w =
+\left(
+\begin{array}{c}
+1 \\
+-5 \\
+2 \\
+\end{array}
+\right)
+\]
+\begin{enumerate}
+  \item We have the vectors $v = (2, 3, -6)$ and $w = (1, -5, 2)$. The projection of v onto w can be computed by finding a multiple pw of w for which the distance d(pw, v) is minimal. This can be done using the formula for projection on v.
+  % The distance between pw and v is:
+  % \[
+  % d(pw, v) = ||pw - v|| = \sqrt{(1p - 2)^2 + (-5p - 3)^2 + (2p + 6)^2}
+  % \]
+  % So, we need to find a p for which $(1p - 2)^2 + (-5p - 3)^2 + (2p + 6)^2$ is minimal. We can start calculating:
+  % \begin{align*}
+  %   (1p - 2)^2 + (-5p - 3)^2 + (2p + 6)^2 &= p^2 - 4p + 4 + 25p^2 + 30p + 9 + 4p^2 + 24p + 36 \\
+  %   &= 30p^2 + 50p + 49
+  % \end{align*}
+  % In order to find the minimum value of p we should derive the equation and check where the derivation is equal to zero.
+  \[
+  v_{||} = pw = \frac{\langle v, w \rangle}{\langle w, w \rangle}w = \frac{2 - 15 - 12}{1 + 25 + 4}(1, -5, 2) = \frac{-25}{30}(1, -5, 2) = - \frac{5}{6}(1, -5, 2)
+  \]
+  \item We should find a vector which is orthogonal for both v and w. We may compute this by taking the cross product of the two vectors.
+  \[
+  v \times w = (v_2w_3 - v_3w_2) - (v_1w_3 - v_3w_1) + (v_1w_2 - v_2w_1) = (6 - 30) - (4 + 6) + (-10 - 3) = (-24, -10, -13)
+  \]
+  So, a possible vector for u is (-24, -10, -13). We can check whether this vector is orthogonal to the two other vectors. First, we check whether is orthogonal with v.
+  \[
+  \langle u, v \rangle = -24 \cdot 2 +  -10 \cdot 3 + -13 \cdot - 6 = -48 - 30 + 78 = 0
+  \]
+  So, v and u are orthogonal. Now, we should check whether u and w are also orthogonal.
+  \[
+  \langle u, w \rangle = -24 \cdot 1 +  -10 \cdot -5 + -13 \cdot 2 = -24 + 50 - 26 = 0
+  \]
+  So, now we see that u is orthogonal to both v and w.
+\end{enumerate}
+
+\section*{Exercise 2}
+\[
+v_1 =
+\left(
+\begin{array}{c}
+1 \\
+1 \\
+1 \\
+0 \\
+\end{array}
+\right)
+v_2 =
+\left(
+\begin{array}{c}
+0 \\
+1 \\
+1 \\
+1 \\
+\end{array}
+\right)
+v_3 =
+\left(
+\begin{array}{c}
+1 \\
+1 \\
+1 \\
+1 \\
+\end{array}
+\right)
+\]
+\begin{enumerate}
+  \item We can do this with Gram-schmidt orthogonalisation. Where we take the independent set $\{v_1, v_2, v_3\}$ as starting point.
+  \begin{align*}
+    v_1' &= v_1 = (1, 1, 1, 0) \\
+    v_2' &= v_2 - \frac{\langle v_2, v_1' \rangle}{\langle v_1', v_1' \rangle}v_1' = (0, 1, 1, 1) -  \frac{2}{3}(1, 1, 1, 0) = (-\frac{2}{3}, \frac{1}{3}, \frac{1}{3}, 1) \\
+    v_3' &= v_3 - \frac{\langle v_3, v_1' \rangle}{\langle v_1', v_1' \rangle}v_1' - \frac{\langle v_3, v_2' \rangle}{\langle v_2', v_2' \rangle}v_2' = (1, 1, 1, 1) - \frac{3}{3}(1, 1, 1, 0) - \frac{1}{3}(-\frac{2}{3}, \frac{1}{3}, \frac{1}{3}, 1) \\ &= (0, 0, 0, 1) - \frac{1}{3}(-\frac{2}{3}, \frac{1}{3}, \frac{1}{3}, 1) = (0, 0, 0, 1) - (-\frac{2}{9}, \frac{1}{9}, \frac{1}{9}, \frac{3}{9}) = (\frac{2}{9}, -\frac{1}{9}, -\frac{1}{9}, \frac{6}{9})
+  \end{align*}
+  \item We may eliminate the fractions from $v_2'$ by multiplying the values with 3. This gives $v_2' = (-2, 1, 1, 3)$. The fractions from $v_3'$ may also be removed by multiplying with 9 which gives $v_3' = (2, -1, -1, 6)$. Now we can check whether the vectors are indeed orthogonal.
+  \begin{align*}
+    \langle v_1', v_2' \rangle &= 1 \cdot - 2 + 1 \cdot 1 + 1 \cdot 1 + 0 \cdot 3 = -2 + 1 + 1 + 0 = 0 \\
+    \langle v_1', v_3' \rangle &= 1 \cdot 2 + 1 \cdot -1 + 1 \cdot -1 + 0 \cdot 6 = 2 - 1 - 1 + 0 = 0 \\
+    \langle v_2', v_3' \rangle &= -2 \cdot 2 + 1 \cdot -1 + 1 \cdot -1 + 3 \cdot 6 = -4 - 1 - 1 + 18 = 12
+  \end{align*}
+  I think I made a miscalculation somewhere, since $v_2'$ and $v_3'$ are not orthogonal.
+  \item
+  \item The distances between u and the three given vectors are as follows:
+  \begin{align*}
+  d(u, v_1) &= ||u - v_1|| = \sqrt{(2 - 1)^2 + (2 - 1)^2 + (3 - 1)^2 + (1 - 0)^2} = \sqrt{1 + 1 + 4 + 1} = \sqrt{7} \\
+  d(u, v_2) &= ||u - v_2|| = \sqrt{(2 - 0)^2 + (2 - 1)^2 + (3 - 1)^2 + (1 - 1)^2} = \sqrt{4 + 1 + 4 + 0} = \sqrt{9} \\
+  d(u, v_3) &= ||u - v_3|| = \sqrt{(2 - 1)^2 + (2 - 1)^2 + (3 - 1)^2 + (1 - 1)^2} = \sqrt{1 + 1 + 4 + 0} = \sqrt{6}
+  \end{align*}
+  If we compare this with $||u - u_0||$ I think the distance with $u_0$ should be smaller than the distance with any other vector. The reason for this is that the pojection is a vector with a minimal distance. No other vectors may have a shorter distance to u.
+
+\end{enumerate}
+
+\section*{Exercise 3}
+\begin{enumerate}
+  \item
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,729 @@
+%
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+\usepackage{amsmath}
+% And some student asked me to include amsmath as well...
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+% The tikz package can be used to draw all kinds of diagrams.
+% In this assignment it is being used for drawing the parse trees
+
+
+\usepackage{xspace}
+% xspace can be used to let LaTeX decide whether a command should be followed
+% y a space or not, depending on what follows.
+
+% Some obscure definition to create a circled node within xy.
+% The definition is made by Freek Wiedijk who prefers to do his definitions
+% in TeX instead of LaTeX, which explains the \def instead of \newcommand.
+\def\node{*++[o][F-]}
+\def\fnode{*++[o][F=]}
+
+\usepackage{csquotes}
+\usepackage{mathtools}
+
+% This command puts a `def' on top of an `='.
+\newcommand{\isdef}{\ensuremath{\,\,\buildrel\rm def\over=}\,\,}
+
+\reversemarginpar
+\title{Linear Algebra for AI\\Assignment 3}
+
+\author{Tony Lopar \\ s1013792 \\ Group 5 \quad Felicity Reddel}
+
+\begin{document}
+\maketitle
+
+\section*{Exercise 1}
+We may use a matrix to solve this. If the matrix has a non-zero solution then the vectors are dependent. The question for the vectors in i involves the following equations.
+\begin{align*}
+  5v_1 +  3v_2 + v_3 + v_4 &= 0 \\
+          4v_2 + 2v_3 + 3v_4 &= 0 \\
+  3v_1 +  2v_2 + 4v_3 + 3v_4 &= 0 \\
+  4v_1 +  2v_2 + 3v_3 + v_4 &= 0 \\
+\end{align*}
+We can transform this into the following matrix:
+\[
+\left(
+\begin{array}{cccc|c}
+5 & 3 & 1 & 1 & 0 \\
+0 & 4 & 2 & 3 & 0 \\
+3 & 2 & 4 & 3 & 0 \\
+4 & 2 & 3 & 1 & 0 \\
+\end{array}
+\right)
+\]
+Now we may try to solve the values to see whether there is a non-zero solution possible.
+\[
+\left(
+\begin{array}{cccc|c}
+5 & 3 & 1 & 1 & 0 \\
+0 & 4 & 2 & 3 & 0 \\
+3 & 2 & 4 & 3 & 0 \\
+4 & 2 & 3 & 1 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + (-1) \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 4 & 2 & 3 & 0 \\
+3 & 2 & 4 & 3 & 0 \\
+4 & 2 & 3 & 1 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + (-3) \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 4 & 2 & 3 & 0 \\
+0 & -1 & 10 & 3 & 0 \\
+4 & 2 & 3 & 1 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_4:= R_4 + (-4) \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 4 & 2 & 3 & 0 \\
+0 & -1 & 10 & 3 & 0 \\
+0 & -2 & 11 & 1 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3:= R_3 + (-1) \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 4 & 2 & 3 & 0 \\
+0 & 1 & -1 & 2 & 0 \\
+0 & -2 & 11 & 1 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_2 \leftrightarrow R_3$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 1 & -1 & 2 & 0 \\
+0 & 4 & 2 & 3 & 0 \\
+0 & -2 & 11 & 1 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3:= R_3 + (-4) \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 1 & -1 & 2 & 0 \\
+0 & 0 & 6 & -5 & 0 \\
+0 & -2 & 11 & 1 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_4:= R_4 + 2 \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 1 & -1 & 2 & 0 \\
+0 & 0 & 6 & -5 & 0 \\
+0 & 0 & 9 & 5 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_4:= R_4 + (- \frac{3}{2}) \cdot R_3$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 1 & -1 & 2 & 0 \\
+0 & 0 & 6 & -5 & 0 \\
+0 & 0 & 0 & \frac{25}{2} & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_4:= \frac{2}{25} \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 1 & -1 & 2 & 0 \\
+0 & 0 & 6 & -5 & 0 \\
+0 & 0 & 0 & 1 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3:= \frac{1}{6} R_3$}}
+\left(
+\begin{array}{cccc|c}
+1 & 1 & -2 & 0 & 0 \\
+0 & 1 & -1 & 2 & 0 \\
+0 & 0 & 1 & - \frac{5}{6} & 0 \\
+0 & 0 & 0 & 1 & 0 \\
+\end{array}
+\right)
+\]
+In the last matrix we see that there is only one solution possible which contains only zeroes since all values are 0 or result after addition with a zero value a 0(so also zero). This means the matrices are linearly independent.
+
+We can also put these matrices into a system of equations. These equations will be:
+\begin{align*}
+  w_1 +  2w_2 -14w_3   &= 0 \\
+  5w_1 + 20w_3   &= 0 \\
+  4w_1 +  w_2 + 7w_3   &= 0 \\
+\end{align*}
+
+In order to find whether there is a non-zero solution possible we should find a solution with the matrix.
+\[
+\left(
+\begin{array}{ccc|c}
+1 & 2 & -14 & 0 \\
+5 & 0 & 20 & 0 \\
+4 & 1 & 7 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := \frac{1}{5} R_2$}}
+\left(
+\begin{array}{ccc|c}
+1 & 2 & -14 & 0 \\
+1 & 0 & 4 & 0 \\
+4 & 1 & 7 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + 2 \cdot R_3$}}
+\left(
+\begin{array}{ccc|c}
+9 & 4 & 0 & 0 \\
+1 & 0 & 4 & 0 \\
+4 & 1 & 7 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_2$}}
+\left(
+\begin{array}{ccc|c}
+9 & 4 & 0 & 0 \\
+1 & 0 & 4 & 0 \\
+3 & 1 & 3 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_2$}}
+\left(
+\begin{array}{ccc|c}
+9 & 4 & 0 & 0 \\
+1 & 0 & 4 & 0 \\
+3 & 1 & 3 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 + (-1) \cdot R_2$}}
+\left(
+\begin{array}{ccc|c}
+8 & 4 & -4 & 0 \\
+1 & 0 & 4 & 0 \\
+3 & 1 & 3 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := \frac{1}{4} R_1$}}
+\left(
+\begin{array}{ccc|c}
+2 & 1 & -1 & 0 \\
+1 & 0 & 4 & 0 \\
+3 & 1 & 3 & 0 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 + 1 \cdot R_2$}}
+\left(
+\begin{array}{ccc|c}
+3 & 1 & 3 & 0 \\
+1 & 0 & 4 & 0 \\
+3 & 1 & 3 & 0 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_1$}}
+\left(
+\begin{array}{ccc|c}
+3 & 1 & 3 & 0 \\
+1 & 0 & 4 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{array}
+\right)
+\]
+% \[
+% \left(
+% \begin{array}{ccc|c}
+% 1 & 2 & -14 & 0 \\
+% 5 & 0 & 20 & 0 \\
+% 4 & 1 & 7 & 0 \\
+% \end{array}
+% \right)
+% \xrightarrow{\text{$R_2 := R_2 + (-5) \cdot R_1$}}
+% \left(
+% \begin{array}{ccc|c}
+% 1 & 2 & -14 & 0 \\
+% 0 & -10 & -50 & 0 \\
+% 4 & 1 & 7 & 0 \\
+% \end{array}
+% \right)
+% \xrightarrow{\text{$R_2 := (- \frac{1}{10}) R_2$}}
+% \left(
+% \begin{array}{ccc|c}
+% 1 & 2 & -14 & 0 \\
+% 0 & 1 & 5 & 0 \\
+% 4 & 1 & 7 & 0 \\
+% \end{array}
+% \right)
+% \]
+% \[
+% \xrightarrow{\text{$R_3 := R_3 + (-4) R_1$}}
+% \left(
+% \begin{array}{ccc|c}
+% 1 & 2 & -14 & 0 \\
+% 0 & 1 & 5 & 0 \\
+% 0 & -7 & 63 & 0 \\
+% \end{array}
+% \right)
+% \xrightarrow{\text{$R_3 := \frac{1}{7} R_3$}}
+% \left(
+% \begin{array}{ccc|c}
+% 1 & 2 & -14 & 0 \\
+% 0 & 1 & 5 & 0 \\
+% 0 & -1 & 9 & 0 \\
+% \end{array}
+% \right)
+% \xrightarrow{\text{$R_3 := R_3 + 1 \cdot R_2$}}
+% \left(
+% \begin{array}{ccc|c}
+% 1 & 2 & -14 & 0 \\
+% 0 & 1 & 5 & 0 \\
+% 0 & 0 & 14 & 0 \\
+% \end{array}
+% \right)
+% \]
+We see that this system has multiple solutions possible. This means that it doesn't only have the zero solution which shows us that these vectors are dependent.
+
+\section*{Exercise 2}
+The multiplication of Av will result:
+\[
+\left(
+\begin{array}{c}
+1 \cdot 1 + 2 \cdot -1 + 3 \cdot 2 \\
+4 \cdot 1 + 5 \cdot -1 + 6 \cdot 2 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+1 - 2 + 6 \\
+4 - 5 + 12 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+5 \\
+11 \\
+\end{array}
+\right)
+\]
+
+ii) If we have $(A + B^T)v$ we should first find the transpose matrix of B. This means we should mirror the original matrix.
+\[
+B^T =
+\left(
+\begin{array}{ccc}
+9 & 6 & 3 \\
+8 & 5 & 2 \\
+\end{array}
+\right)
+\]
+We can rewrite the equation of $(A + B^T)v$ to $(Av)+(B^Tv)$. This will give us the following situation:
+\begin{align*}
+(Av)+(B^Tv) &=
+\left(
+\begin{array}{c}
+1 \cdot 1 + 2 \cdot -1 + 3 \cdot 2 \\
+4 \cdot 1 + 5 \cdot -1 + 6 \cdot 2 \\
+\end{array}
+\right)
++
+\left(
+\begin{array}{c}
+9 \cdot 1 + 6 \cdot -1 + 3 \cdot 2 \\
+8 \cdot 1 + 5 \cdot -1 + 2 \cdot 2 \\
+\end{array}
+\right) \\
+&=
+\left(
+\begin{array}{c}
+1 -2 + 6 \\
+4 - 5 + 12 \\
+\end{array}
+\right)
++
+\left(
+\begin{array}{c}
+9 - 6 + 6 \\
+8 + -5 + 4 \\
+\end{array}
+\right) \\
+&=
+\left(
+\begin{array}{c}
+5 \\
+11 \\
+\end{array}
+\right)
++
+\left(
+\begin{array}{c}
+9 \\
+7 \\
+\end{array}
+\right) \\
+&=
+\left(
+\begin{array}{c}
+14 \\
+18 \\
+\end{array}
+\right)
+\end{align*}
+
+
+\section*{Exercise 3}
+% Is it meant to write the vector in the form: a(v1) + b(v2) + c(v3)?
+The vector v is a transponse, so if we convert it to the normal matrix it would be as follows.
+\[
+a \cdot
+\left(
+\begin{array}{c}
+2 \\
+3 \\
+1 \\
+\end{array}
+\right)
++ b \cdot
+\left(
+\begin{array}{c}
+5 \\
+-3 \\
+0 \\
+\end{array}
+\right)
++ c \cdot
+\left(
+\begin{array}{c}
+4 \\
+3 \\
+2 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+8 \\
+-6 \\
+- 1 \\
+\end{array}
+\right)
+\]
+We can solve the values for a, b and c by trying to solve the equations using a matrix.
+\[
+\left(
+\begin{array}{ccc|c}
+2 & 5 & 4 & 8 \\
+3 & -3 & 3 & -6 \\
+1 & 0 & 2 & -1 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + (-3) \cdot R_3$}}
+\left(
+\begin{array}{ccc|c}
+2 & 5 & 4 & 8 \\
+0 & -3 & -3 & -3 \\
+1 & 0 & 2 & -1 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + (-1) \cdot R_3$}}
+\left(
+\begin{array}{ccc|c}
+1 & 5 & 2 & 9 \\
+0 & -3 & -3 & -3 \\
+1 & 0 & 2 & -1 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_1$}}
+\left(
+\begin{array}{ccc|c}
+1 & 5 & 2 & 9 \\
+0 & -3 & -3 & -3 \\
+0 & -5 & 0 & -10 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 \leftrightarrow R_3$}}
+\left(
+\begin{array}{ccc|c}
+1 & 5 & 2 & 9 \\
+0 & -5 & 0 & -10 \\
+0 & -3 & -3 & -3 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_2 := - \frac{1}{5} R_2$}}
+\left(
+\begin{array}{ccc|c}
+1 & 5 & 2 & 9 \\
+0 & 1 & 0 & 2 \\
+0 & -3 & -3 & -3 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + 3 \cdot R_2$}}
+\left(
+\begin{array}{ccc|c}
+1 & 5 & 2 & 9 \\
+0 & 1 & 0 & 2 \\
+0 & 0 & -3 & 3 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow[Echelon form]{\text{$R_3 := - \frac{1}{3} R_3$}}
+\left(
+\begin{array}{ccc|c}
+1 & 5 & 2 & 9 \\
+0 & 1 & 0 & 2 \\
+0 & 0 & 1 & -1 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + (-2) R_3$}}
+\left(
+\begin{array}{ccc|c}
+1 & 5 & 0 & 11 \\
+0 & 1 & 0 & 2 \\
+0 & 0 & 1 & -1 \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 + (-5) R_2$}}
+\left(
+\begin{array}{ccc|c}
+1 & 0 & 0 & 1 \\
+0 & 1 & 0 & 2 \\
+0 & 0 & 1 & -1 \\
+\end{array}
+\right)
+\]
+The solution shows us that we can take a = 1, b = 2 and c = -1. This means we can express the vector v in $v_1, v_2$ and $v_3$ as follows:
+\[
+1 \cdot
+\left(
+\begin{array}{c}
+2 \\
+3 \\
+1 \\
+\end{array}
+\right)
++ 2 \cdot
+\left(
+\begin{array}{c}
+5 \\
+-3 \\
+0 \\
+\end{array}
+\right)
++ -1 \cdot
+\left(
+\begin{array}{c}
+4 \\
+3 \\
+2 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+8 \\
+-6 \\
+- 1 \\
+\end{array}
+\right)
+\]
+In order to see whether these values are right we can verify them.
+\begin{align*}
+  1 \cdot 2 + 2 \cdot 5 + (-1) \cdot 4 &= 2 + 10 - 4 &= 8 \\
+  1 \cdot 3 + 2 \cdot -3 + (-1) \cdot 3 &= 3 - 6 - 3 &= -6 \\
+  1 \cdot 1 + 2 \cdot 0 + (-1) \cdot 2 &= 1 + 0 - 2 &= -1 \\
+\end{align*}
+
+\section*{Exercise 4}
+In order to show that these vectors form a basis in $\mathbb{R}^2$ we need to show that they are independent and that they span in $\mathbb{R}^2$.
+
+First, we should show that they are independent. This means we should show that $a_1 v_1 + a_2 v_2 = 0$ holds only when $a_1 = a_2 = 0$. This means we should solve the values and find only one solution where the values are zero.
+\[
+\left(
+\begin{array}{cc}
+4 & 8 \\
+1 & 3 \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + (- \frac{1}{4}) \cdot R_1$}}
+\left(
+\begin{array}{cc}
+4 & 8 \\
+0 & 1 \\
+\end{array}
+\right)
+\]
+In the matrix above we see that there is only one solution which only contains zeroes since $v_2 = 0$ and the value of $v_1$ is 0 in addition with $v_2$, so $v_2$ should also be zero.
+
+Next, we have to show that the vectors span in $\mathbb{R}^2$. Therefore we should express the vectors in x and y.
+
+\[
+a \cdot
+\left(
+\begin{array}{c}
+4 \\
+1 \\
+\end{array}
+\right)
++ b \cdot
+\left(
+\begin{array}{c}
+8 \\
+3 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+x \\
+y \\
+\end{array}
+\right)
+\]
+\[
+\left(
+\begin{array}{cc|c}
+4 & 8 & x \\
+1 & 3 & y \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := \frac{1}{4} R_1$}}
+\left(
+\begin{array}{cc|c}
+1 & 2 & \frac{1}{4} x \\
+1 & 3 & y \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + (-1) \cdot R_1$}}
+\left(
+\begin{array}{cc|c}
+1 & 2 & \frac{1}{4} x \\
+0 & 1 & y - \frac{1}{4} x \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 + (-2) \cdot R_2$}}
+\left(
+\begin{array}{cc|c}
+1 & 0 & \frac{1}{2} x - y\\
+0 & 1 & y - \frac{1}{4} x \\
+\end{array}
+\right)
+\]
+Now we see that we can span all points in $\mathbb{R}^2$ with the vectors $v_1$ and $v_2$.
+
+\section*{Exercise 5}
+ % How to show? addition, multiplication preservation + zero and minus?
+ In order to show that the map is linear we should show that the map holds all the properties of the linear map.
+\begin{align*}
+ f(x, y, z) &= (x + z, 2x + z, 3x - y + z)
+\end{align*}
+\paragraph{Preservation of scalar multiplication} First, we will show that this map is linear under the definition that it preserves scalar multiplication.
+\begin{align*}
+  f(a \cdot (x, y, z))  &= f(a \cdot x, a \cdot y, a \cdot z) \\
+                        &= (a \cdot x + a \cdot z, a \cdot 2x + a \cdot z, a \cdot 3x - a \cdot y + a \cdot z) \\
+                        &= (a \cdot (x + z), a \cdot (2x + z), a \cdot (3x - y + z)) \\
+                        &= a \cdot (x + z, 2x + z, 3x - y + z) \\
+                        &= a \cdot f(x, y, z)
+\end{align*}
+
+\paragraph{Preservation under addition} Next, we will show that this map also preserves under addition.
+\begin{align*}
+f((x_1, x_2, x_3) + (y_1, y_2, y_3) + (z_1, z_2, z_3))
+            &= f(x_1 + y_1 + z_1, x_2 + y_2 + z_2, x_3 + y_3 + z_3) \\
+            &= ((x_1 + y_1 + z_1) + (x_3 + y_3 + z_3), \\ 2(x_1 + y_1 + z_1) + (x_3 + y_3 + z_3), \\ 3(x_1 + y_1 + z_1) - (x_2 + y_2 + z_2) + (x_3 + y_3 + z_3)) \\
+            &= ((x_1 + x_3) + (y_1 + y_3) + (z_1 + z_3), \\ (2x_1 + x_3) + (2y_1 + y_3) + (2z_1 + z_3), \\ (3x_1 - x_2 + x_3) + (3y_1 - y_2 + y_3) + (3z_1 - z_2 + z_3)) \\
+            &= (x_1 + x_3, 2x_1 + x_3, 3x_1 - x_2 + x_3) + (y_1 + y_3, 2y_1 + y_3, \\ 3y_1 - y_2 + y_3) + (z_1 + z_3, 2z_1 + z_3, 3z_1 - z_2 + z_3) \\
+            &= f(x_1, x_2, x_3) + f(y_1, y_2, y_3) + f(z_1, z_2, z_3) \\
+\end{align*}
+
+\paragraph{Preserves minus} Moreover, the map preserves minus.
+\begin{align*}
+  f(-(x, y, z)) &= f(-x, -y, -z) \\
+                &= (-x - z, -2x - z, -3x + y - z) \\
+                &= (-(x + z), -(2x + z), -(3x - y + z)) \\
+                &= -(x + z, 2x + z, 3x - y + z) \\
+                &= - f(x, y, z)
+\end{align*}
+
+\paragraph{Preserves zero} Finally, we will show that this map preserves that $f(0, 0, 0) = 0$.
+\begin{align*}
+  f(0, 0, 0)  &= (0 + 0, 2 \cdot 0 + 0, 3 \cdot 0 - 0 + 0) \\
+              &= (0, 0, 0) \\
+              &= 0
+\end{align*}
+
+\section*{Exercise 6}
+% Only need to disprove one of the properties?
+The map is non linear since it doesn't preserve zero since $f(0) = 0 + 3 = 3$. This means that the map is non-linear becasue $f(0) \neq 0$   .
+
+\end{document}

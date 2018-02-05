@@ -1,0 +1,633 @@
+%
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+\usepackage{amsmath}
+% And some student asked me to include amsmath as well...
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+% The tikz package can be used to draw all kinds of diagrams.
+% In this assignment it is being used for drawing the parse trees
+
+
+\usepackage{xspace}
+% xspace can be used to let LaTeX decide whether a command should be followed
+% y a space or not, depending on what follows.
+
+% Some obscure definition to create a circled node within xy.
+% The definition is made by Freek Wiedijk who prefers to do his definitions
+% in TeX instead of LaTeX, which explains the \def instead of \newcommand.
+\def\node{*++[o][F-]}
+\def\fnode{*++[o][F=]}
+
+\usepackage{csquotes}
+\usepackage{mathtools}
+
+% This command puts a `def' on top of an `='.
+\newcommand{\isdef}{\ensuremath{\,\,\buildrel\rm def\over=}\,\,}
+
+\reversemarginpar
+\title{Linear Algebra for AI\\Assignment 1}
+
+% Replace the placeholders by your real name, student number and
+% group (for the exercise hours)
+\author{Tony Lopar \\ s1013792 \\ Group 5 \quad Felicity Reddel}
+
+% In LaTeX everything before \begin{document} is called pre-amble.
+% This is where you put all important settings. The real document
+% starts after \begin{document}.
+\begin{document}
+\maketitle
+
+\section*{Exercise 1}
+We are having the following linear equations: \\
+\begin{align*}
+x - y + z &= -3 \\
+-3x + 4y - z &= 2 \\
+x - 3y - 2z &= 7
+\end{align*}
+
+When we put the values of the equations into a coefficient matrix, it would look like this: \\
+\[
+\left(
+\begin{array}{ccc}
+1 & -1 & 1   \\
+-3 & 4 & -1 \\
+1 & -3 & -2    \\
+\end{array}
+\right)
+\]
+
+The augmented matrix would be:
+\[
+\left(
+\begin{array}{ccc|c}
+1 & -1 & 1 & -3   \\
+-3 & 4 & -1 & 2  \\
+1 & -3 & -2 & 7   \\
+\end{array}
+\right)
+\]
+
+In order to solve the equations we should try to get the matrix to (reduced) echelon form.
+\[
+\left(
+\begin{array}{ccc|c}
+1 & -1 & 1 & -3   \\
+-3 & 4 & -1 & 2  \\
+1 & -3 & -2 & 7   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 - R_1$}}
+\left(
+\begin{array}{ccc|c}
+1 & -1 & 1 & -3   \\
+-3 & 4 & -1 & 2  \\
+0 & -2 & -3 & 10   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + 3 \cdot R_1$}}
+\left(
+\begin{array}{ccc|c}
+1 & -1 & 1 & -3   \\
+0 & 1 & 2 & -7  \\
+0 & -2 & -3 & 10   \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 + 2 \cdot R_2$}}
+\left(
+\begin{array}{ccc|c}
+1 & -1 & 1 & -3   \\
+0 & 1 & 2 & -7  \\
+0 & 0 & 1 & -4   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + -(2 \cdot R_3)$}}
+\left(
+\begin{array}{ccc|c}
+1 & -1 & 1 & -3   \\
+0 & 1 & 0 & 1 \\
+0 & 0 & 1 & -4   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + R_2$}}
+\left(
+\begin{array}{ccc|c}
+1 & 0 & 1 & -2   \\
+0 & 1 & 0 & 1 \\
+0 & 0 & 1 & -4   \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 + -(R_3)$}}
+\left(
+\begin{array}{ccc|c}
+1 & 0 & 0 & 2   \\
+0 & 1 & 0 & 1 \\
+0 & 0 & 1 & -4   \\
+\end{array}
+\right)
+\]
+
+The result of the process is the following reduced echelon matrix:
+
+\[
+\left(
+\begin{array}{ccc|c}
+1 & 0 & 0 & 2   \\
+0 & 1 & 0 & 1 \\
+0 & 0 & 1 & -4   \\
+\end{array}
+\right)
+\]
+The reduced echelon matrix shows us that there is a unique solution, so the equations are consistent.
+
+When we fill in the results of the reduced echelon matrix in the original equations, we see that they hold.\\
+\begin{align*}
+1 \cdot 2 + (-1) \cdot 1 + 1 \cdot -4 &= -3 \\
+-3 \cdot 2 + 4 \cdot 1 + -1 \cdot (-4) &= 2 \\
+1 \cdot 2 + (-3) \cdot 1 - 2 \cdot  (-4) &= 7
+\end{align*}
+
+\section*{Exercise 2}
+We are having the following linear equations: \\
+\begin{align*}
+x_1 - 3x_2 - 6x_3 &= 2 \\
+3x_1 - 8x_2 - 17x_3 &= -1 \\
+x_1 - 4x_2 - 7x_3 &= 10
+\end{align*}
+
+When we put the values of the equations into a coefficient matrix, it would look like this: \\
+\[
+\left(
+\begin{array}{ccc}
+1 & -3 & -6   \\
+3 & -8 & -17 \\
+1 & -4 & -7    \\
+\end{array}
+\right)
+\]
+
+The augmented matrix would be:
+\[
+\left(
+\begin{array}{ccc|c}
+1 & -3 & -6 & 2   \\
+3 & -8 & -17 & -1 \\
+1 & -4 & -7 & 10   \\
+\end{array}
+\right)
+\]
+
+In order to solve the equations we should try to get the matrix to (reduced) echelon form.
+\[
+\left(
+\begin{array}{ccc|c}
+1 & -3 & -6 & 2   \\
+3 & -8 & -17 & -1 \\
+1 & -4 & -7 & 10   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + (-3) \cdot R_1$}}
+\left(
+\begin{array}{ccc|c}
+1 & -3 & -6 & 2   \\
+0 & 1 & 1 & -7 \\
+1 & -4 & -7 & 10   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + (-1) \cdot R_1$}}
+\left(
+\begin{array}{ccc|c}
+1 & -3 & -6 & 2   \\
+0 & 1 & 1 & -7 \\
+0 & -1 & -1 & 8   \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 + 1 \cdot R_2 $}}
+\left(
+\begin{array}{ccc|c}
+1 & -3 & -6 & 2   \\
+0 & 1 & 1 & -7 \\
+0 & 0 & 0 & 1   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 + 7 \cdot R_3 $}}
+\left(
+\begin{array}{ccc|c}
+1 & -3 & -6 & 2   \\
+0 & 1 & 1 & 0 \\
+0 & 0 & 0 & 1   \\
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 + (-2) \cdot R_3 $}}
+\left(
+\begin{array}{ccc|c}
+1 & -3 & -6 & 0   \\
+0 & 1 & 1 & 0 \\
+0 & 0 & 0 & 1   \\
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 + 3 \cdot R_2 $}}
+\left(
+\begin{array}{ccc|c}
+1 & 0 & -3 & 0   \\
+0 & 1 & 1 & 0 \\
+0 & 0 & 0 & 1   \\
+\end{array}
+\right)
+\]
+
+The result of the process is the following reduced echelon matrix:
+
+\[
+\left(
+\begin{array}{ccc|c}
+1 & 0 & -3 & 0   \\
+0 & 1 & 1 & 0 \\
+0 & 0 & 0 & 1   \\
+\end{array}
+\right)
+\]
+The reduced echelon matrix shows us that there is no solution, because equation 3 will be as follows:
+\begin{align*}
+  0 \cdot x_1 + 0 \cdot x_2 + 0 \cdot x_3 &= 1 \\
+  0 + 0 + 0 &= 1  \\
+  0 &= 1
+\end{align*}
+
+Since $0 \neq 1$ the equation has no solutions. This means the equations are inconsistent.
+
+\section*{Exercise 3}
+\begin{align*}
+2x + y + 2v + w &= 1 \\
+4x + 4y + 6v + w &= 2 \\
+6x + y + 4v + 5w &= 4 \\
+2x + 3y + 5v + w &= 4 \\
+\end{align*}
+
+
+When we put the values of the equations into a coefficient matrix, it would look like this: \\
+\[
+\left(
+\begin{array}{cccc}
+2 & 1 & 2 & 1   \\
+4 & 4 & 6 & 1 \\
+6 & 1 & 4 & 5    \\
+2 & 3 & 5 & 1
+\end{array}
+\right)
+\]
+
+The augmented matrix would be:
+\[
+\left(
+\begin{array}{cccc|c}
+2 & 1 & 2 & 1 & 1  \\
+4 & 4 & 6 & 1 & 2  \\
+6 & 1 & 4 & 5 & 4  \\
+2 & 3 & 5 & 1 & 4
+\end{array}
+\right)
+\]
+
+In order to solve the equations we should try to get the matrix to (reduced) echelon form.
+\[
+\left(
+\begin{array}{cccc|c}
+2 & 1 & 2 & 1 & 1  \\
+4 & 4 & 6 & 1 & 2  \\
+6 & 1 & 4 & 5 & 4  \\
+2 & 3 & 5 & 1 & 4
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := \frac{1}{2} \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+4 & 4 & 6 & 1 & 2  \\
+6 & 1 & 4 & 5 & 4  \\
+2 & 3 & 5 & 1 & 4
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := R_2 - 4 \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & -1 & 0  \\
+6 & 1 & 4 & 5 & 4  \\
+2 & 3 & 5 & 1 & 4
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 - 6 \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & -1 & 0  \\
+0 & -2 & -2 & 2 & 1  \\
+2 & 3 & 5 & 1 & 4
+\end{array}
+\right)
+\xrightarrow{\text{$R_4 := R_4 - 2 \cdot R_1$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & -1 & 0  \\
+0 & -2 & -2 & 2 & 1  \\
+0 & 2 & 3 & 0 & 3
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_3 := R_3 + 1 \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & -1 & 0  \\
+0 & 0 & 1 & 2 & 4  \\
+0 & 2 & 3 & 0 & 3
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 + 1 \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & -1 & 0  \\
+0 & 0 & 1 & 2 & 4  \\
+0 & 2 & 3 & 0 & 3
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_4 := R_4 - 1 \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & -1 & 0  \\
+0 & 0 & 1 & 2 & 4  \\
+0 & 0 & 1 & 1 & 3
+\end{array}
+\right)
+\xrightarrow{\text{$R_4 := R_4 - 1 \cdot R_3$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & -1 & 0  \\
+0 & 0 & 1 & 2 & 4  \\
+0 & 0 & 0 & -1 & -1
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_4 := (-1) \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & -1 & 0  \\
+0 & 0 & 1 & 2 & 4  \\
+0 & 0 & 0 & 1 & 1
+\end{array}
+\right)
+\xrightarrow{\text{$R_3 := R_3 - 2 \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & -1 & 0  \\
+0 & 0 & 1 & 0 & 2  \\
+0 & 0 & 0 & 1 & 1
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_2 := R_2 + 1 \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 2 & 2 & 0 & 1  \\
+0 & 0 & 1 & 0 & 2  \\
+0 & 0 & 0 & 1 & 1
+\end{array}
+\right)
+\xrightarrow{\text{$R_2 := \frac{1}{2} R_2$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 1 & 1 & 0 & \frac{1}{2}  \\
+0 & 0 & 1 & 0 & 2  \\
+0 & 0 & 0 & 1 & 1
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_2 := R_2 - 1 \cdot R_3$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & \frac{1}{2} & \frac{1}{2}  \\
+0 & 1 & 0 & 0 & - \frac{3}{2}  \\
+0 & 0 & 1 & 0 & 2  \\
+0 & 0 & 0 & 1 & 1
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 - \frac{1}{2} \cdot R_4$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 1 & 0 & 0  \\
+0 & 1 & 0 & 0 & - \frac{3}{2}  \\
+0 & 0 & 1 & 0 & 2  \\
+0 & 0 & 0 & 1 & 1
+\end{array}
+\right)
+\]
+\[
+\xrightarrow{\text{$R_1 := R_1 - 1 \cdot R_3$}}
+\left(
+\begin{array}{cccc|c}
+1 & \frac{1}{2} & 0 & 0 & -2  \\
+0 & 1 & 0 & 0 & - \frac{3}{2}  \\
+0 & 0 & 1 & 0 & 2  \\
+0 & 0 & 0 & 1 & 1
+\end{array}
+\right)
+\xrightarrow{\text{$R_1 := R_1 - \frac{1}{2} \cdot R_2$}}
+\left(
+\begin{array}{cccc|c}
+1 & 0 & 0 & 0 & - \frac{5}{4}  \\
+0 & 1 & 0 & 0 & - \frac{3}{2}  \\
+0 & 0 & 1 & 0 & 2  \\
+0 & 0 & 0 & 1 & 1
+\end{array}
+\right)
+\]
+
+After transforming the matrix we have the following reduced echelon matrix.
+\[
+\left(
+\begin{array}{cccc|c}
+1 & 0 & 0 & 0 & - \frac{5}{4}  \\
+0 & 1 & 0 & 0 & - \frac{3}{2}  \\
+0 & 0 & 1 & 0 & 2  \\
+0 & 0 & 0 & 1 & 1
+\end{array}
+\right)
+\]
+
+The reduced echelon matrix shows us that there is a unique solution, so the equations are consistent. When we fill in the results of the reduced echelon matrix in the original equations, we see that they hold.\\
+We see that the first equation results the correct result of 1.
+\begin{align*}
+2 \cdot - \frac{5}{4} + 1 \cdot - \frac{3}{2} + 2 \cdot 2 + 1 \cdot 1
+&= - \frac{10}{4} - \frac{3}{2} + 4 + 1 \\
+&= - \frac{10}{4} - \frac{6}{4} + \frac{16}{4} + \frac{4}{4} \\
+&= - \frac{16}{4} + \frac{16}{4} + \frac{4}{4} \\
+&= \frac{4}{4} \\
+&= 1
+\end{align*}
+
+When we fill in the second equation we see this doesn't hold.
+\begin{align*}
+4 \cdot - \frac{5}{4} + 4 \cdot - \frac{3}{2} + 6 \cdot 2 + 1 \cdot 1
+&= - \frac{20}{4} - \frac{12}{2} + 12 + 1 \\
+&= - \frac{20}{4} - \frac{24}{4} + 12 + 1 \\
+&= - 5 - 6 + 12 + 1 \\
+&= 13 -11 \\
+&= 2
+\end{align*}
+
+The third equation also results in the correct result of 4.
+\begin{align*}
+6 \cdot - \frac{5}{4} + 1 \cdot - \frac{3}{2} + 4 \cdot 2 + 5 \cdot 1
+&= - \frac{30}{4} - \frac{3}{2} + 8 + 5 \\
+&= - \frac{15}{2} - \frac{3}{2} + \frac{16}{2} + \frac{10}{2} \\
+&= - \frac{18}{2} + \frac{26}{2} \\
+&= 13 - 9
+&= 4
+\end{align*}
+
+Finally, we see that the fourth equation gives the correct result of 4:
+\begin{align*}
+2 \cdot - \frac{5}{4} + 3 \cdot - \frac{3}{2} + 5 \cdot 2 + 1 \cdot 1
+&= - \frac{10}{4} - \frac{9}{2} + 10 + 1 \\
+&= - \frac{5}{2} - \frac{9}{2} + 10 + 1 \\
+&= - \frac{17}{2} + 11 \\
+&= 11 - 7 \\
+&= 4
+\end{align*}
+
+\section*{Exercise 4}
+\begin{align*}
+  3x_1 + x_2 + x_3 &= 3 \\
+  x_1 - x_2 -x_3 &= 1
+\end{align*}
+
+% In order to find the vectors and an intersecting point we should first solve the equations.
+% \[
+% \left(
+% \begin{array}{ccc|c}
+% 3 & 1 & 1 & 3   \\
+% 1 & -1 & -1 & 1 \\
+% \end{array}
+% \right)
+% \]
+%
+% \[
+% \left(
+% \begin{array}{ccc|c}
+% 3 & 1 & 1 & 3   \\
+% 1 & -1 & -1 & 1 \\
+% \end{array}
+% \right)
+% \xrightarrow{\text{$R_2 := R_2 - 3 \cdot R_1$}}
+% \left(
+% \begin{array}{ccc|c}
+% 3 & 1 & 1 & 3   \\
+% 0 & -4 & -4 & -8 \\
+% \end{array}
+% \right)
+% \]
+% \[
+% \xrightarrow{\text{$R_2 := (- \frac{1}{4})R_2$}}
+% \left(
+% \begin{array}{ccc|c}
+% 3 & 1 & 1 & 3   \\
+% 0 & 1 & 1 & 2 \\
+% \end{array}
+% \right)
+% \xrightarrow{\text{$R_1 := R_1 - 1 \cdot R_2$}}
+% \left(
+% \begin{array}{ccc|c}
+% 3 & 0 & 0 & 1   \\
+% 0 & 1 & 1 & 2 \\
+% \end{array}
+% \right)
+% \]
+% \[
+% A_{m,n} =
+%  \begin{pmatrix}
+%   a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
+%   a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
+%   \vdots  & \vdots  & \ddots & \vdots  \\
+%   a_{m,1} & a_{m,2} & \cdots & a_{m,n}
+%  \end{pmatrix}
+%  \]
+%
+%
+%  \[
+%  \left(
+%  \begin{array}{cccc|c}
+%  1 & 0 & 3 & -1 & 0 \\
+%  0 & 1 & 1 & -1 & 0 \\
+%  0 & 0 & 0 & 0 & 0 \\
+%  \end{array}
+%  \right)
+%  \]
+
+
+\end{document}
