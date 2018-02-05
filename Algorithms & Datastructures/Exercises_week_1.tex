@@ -1,0 +1,314 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage[ruled,vlined]{algorithm2e}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+
+
+%=====================================
+%
+%			Assignment 1
+%
+%	Author: Alexis Linard
+%			a.linard@cs.ru.nl
+%
+%=====================================
+
+\begin{document}
+
+\title{Weekly Assignment 1}
+\author{Tony Lopar s1013792}
+\date{7th September 2017}
+\maketitle
+
+\paragraph{Study program:}Pre-master Software Science \\ First participation in this course \\Solutions are placed under the questions.
+
+\paragraph{Deadline:} 13th September 2017, 6pm.
+
+\paragraph{Important:} When you submit this first weekly assignment, please indicate \textit{a.} your study program and \textit{b.} if you already participated in this course in the past. If on the off chance you decide not to submit the solution to the assignment, please, at least answer these two questions!
+
+\section*{Notations.}
+
+\paragraph{}
+In the remainder of this weekly assignment, we use the same notations as in \href{https://mitpress.mit.edu/books/introduction-algorithms}{CLRS}, in particular:
+\begin{itemize}
+	\item $\lg n = \log_2 n$ (binary logarithm)
+	\item $\ln n = \log_e n$ (natural logarithm)
+\end{itemize}
+
+
+
+
+\section*{Exercise 1.}
+
+Suppose we have a computer which can perform 1 million ($= 10^6$) operations per second. The nine formulas below denote the running time of some algorithms (measured in number of operations) depending on the number of elements $n$ we feed to the algorithm. Determine for each algorithm how many elements can be processed in 1 minute.
+\begin{multicols}{5}
+\begin{enumerate}
+	\item $n$
+    \item $n^2$
+    \item $n^3$
+    \item $n!$
+    \item $n\ \ln\ n$
+    \item $n\ \lg\ n$
+    \item $2^n$
+    \item $n\ \sqrt[]{n}$
+    \item $n^{100}$
+    \item $4^n$
+\end{enumerate}
+\end{multicols}
+
+1 million operations per second means the machine can run 60 million operations per minute.
+\begin{enumerate}
+\section*{Solutions}
+    \item 60 million
+    \item $\sqrt{60 \cdot 10^6} = 7746$
+    \item $\sqrt[3]{60 \cdot 10^6} = 391$
+    \item 11, because the result of 11! is the closest natural number to the number of possible operations!
+    \item $3.95 \cdot 10^6$
+    \item $2.8 \cdot 10^6$
+    \item $^2 \log 60 \cdot 10^6 = 25.8 $
+    \item $n^\frac{3}{2} = \sqrt{n^3} $ ==> $n^3 = (60 \cdot 10^6)^2 ==> n = \sqrt[3]{(60 \cdot 10^6)^2} = 153262$
+    \item $\sqrt[100]{60 \cdot 10^6} = 1.2$
+    \item $^4 \log 60 \cdot 12.9$
+\end{enumerate}
+
+
+\section*{Exercise 2\footnote{$\lg(ab) = \lg(a) + \lg(b)$}.}
+For each pair of functions below, indicate whether $f(n) = \mathcal{O}(g(n))$ \textbf{and/or} $g(n) = \mathcal{O}(f(n))$.
+\begin{enumerate}
+	\item $f(n) = \lg(n^2)$, $g(n) = \lg\ n$. \textbf{Prove it.}
+    \item $f(n) = \sqrt[]{n}$, $g(n) = \ln(n^2)$
+    \item $f(n) = \lg\ n$, $g(n) = \ln\ n $
+    \item $f(n) = n$, $g(n) = \lg\ n $
+    \item $f(n) = n\ \ln\ n + n$, $g(n) = \ln\ n$
+    \item $f(n) = 10$, $g(n) = \ln\ 10$
+    \item $f(n) = 2^n$, $g(n) = 10n^2$
+    \item $f(n) = 2^n$, $g(n) = 3^n$
+\end{enumerate}
+
+\begin{enumerate}
+\section*{Solutions}
+	\item $f(n) = O(g(n))$ and $g(n) = O(f(n)$, because if we want to prove that $f(n) = O(g(n))$ and we take $n_0 = 1$ and $c = 3$, then we get the following statement $lg(n^2) \leq c \cdot lg(n)$. Since $\lg(n^2)$ can be written as $2 \lg\ n$, this statement is true if the $c \geq 2$. To prove that $g(n) = O(f(n))$, we can take $n_0 = 1$ and $c = 1$. This will be true, because $f(n)$ will be twice the value of $g(n)$ for every n.
+    \item $g(n) = O(f(n)), \> f(n) = \sqrt[]{n}$, $g(n) = \ln(n^2) = 2 \ln(n)$. If we take $n_0 = 0$ and $c = 2$, then $f(n) \leq c \cdot g(n)$, because for every n from $n_0, \> f(n)$ will be lower than $c \cdot g(n)$.
+    \item $f(n) = O(g(n))$ and $g(n) = O(f(n)$, because in order to prove $f(n) = O(g(n))$ we can take $n_0 = 0 \> and \> c = 1$ and the value of $\lg(n) \geq \ln(n)$. Otherwise if we take $n_0 = 1 \> and \> c = 2$, then the value of $f(n) \leq g(n)$, for values of $n > n_0$.
+    \item $g = O(f(n)) $, because the value of $\lg(n)$ will always be lower than the value of n if the $n \geq 0$, so we take $n_0 = 0$. Even if we take $c = 1$ the value of n will be higher than $\lg\ n$ from $n_0$
+    \item $g = O(f(n))$, because $f(n) = n \cdot g(n) + n$ since $\ln(n)$ is in both functions. In that case $f(n) \geq g(n)$ when $n \geq 1$, so we can take $n_0 = 1$ and $c = 1$ to make $f(n) \geq$ than $g(n)$.
+    \item $g(n) = O(f(n))$ and $f(n) = O(g(n))$, because for both cases we can pick a c and $n_0$ for which the result is greater than the other. To prove $g(n) = O(f(n))$, we can pick $n_0 = 0 \> and \> c = 1$, because $10 > \ln(10)$ and the result of both functions doesn't depend on n. To prove $f(n) = O(g(n))$, we can pick $n_0 = 0 \> and \> c = 5$ which will make the $g(n)$ greater.
+    \item $g(n) = O(f(n))$, because if we take $n_0 = 5 \> and \> c = 8$, for all $n \geq n_0$ the result of $c \cdot f(n)$ will rise faster.
+    \item $f(n) = O(g(n))$, because if we take $n_0 = 0$ and $c = 1$, the value of $2^n \leq 3^n$.
+\end{enumerate}
+
+
+\section*{Exercise 3.}
+Sort the functions below following $\mathcal{O(\cdot)}$.
+\begin{multicols}{3}
+\begin{enumerate}
+    \item $n$
+    \item $n - n^3 + 7n^5$
+    \item $2^n$
+    \item $n^2$
+    \item $n\ \ln\ n$
+    \item $\sqrt[]{n}$
+    \item $n!$
+    \item $e^n$
+    \item $\ln\ \ln\ n$
+\end{enumerate}
+\end{multicols}
+
+\section*{Solution}
+In order to sort these function I took $n = 10$ for all of the functions.
+\begin{enumerate}
+        \item $\ln\ \ln\ n$ = 0.834
+        \item $\sqrt[]{n}$ = 3,16
+        \item $n\ \ln\ n$ 23.02
+        \item $n = 10$
+    \item $n^2$ = 100
+    \item $n - n^3 + 7n^5$ = 699
+    \item $2^n$ = 1024
+        \item $e^n$ = 22026
+        \item $n!$ = 3628800
+\end{enumerate}
+
+
+
+\section*{Exercise 4.}
+The $n$-th harmonic number is the sum of the reciprocals of the first $n$ natural numbers such that
+\[
+H_n = \sum_{k=1}^n \frac{1}{k} = 1 + \frac{1}{2} + \frac{1}{3} + \ldots + \frac{1}{n}
+\]
+Write a function returning $H_n$ with $n \in \mathbb{N}$ and comment on its asymptotic time complexity.
+
+\section*{Solution}
+\begin{minipage}[t]{5cm}
+  \vspace{0pt}
+  \begin{function}[H]
+\DontPrintSemicolon
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{$n$}
+\Output{$s$}
+  $s \leftarrow 0$\;
+  $k \leftarrow 1$\;
+  \While{$k \leq n$}{
+ 	$s \leftarrow s + 1 / k$;\\
+    $k \leftarrow k + 1$;\\
+  }
+ \caption{O(n)}
+\end{function}
+\end{minipage}%
+
+The complexity of this function is O(n), because the number of executions for the while loop depends on the value of n. Since this is the only part in the function that depends on n, the complexity will not be influenced by code inside the loop.
+
+\section*{Exercise 5.}
+In mathematics, the factorial of a non-negative integer $n$, denoted by $n!$, is the product of all positive integers less than or equal to $n$ such as
+\begin{equation}
+\left\{
+\begin{array}{l}
+ n! = n \times (n-1)!\\
+ 0! = 1
+\end{array}
+\right.
+\end{equation}
+
+Write a recursive function returning the factorial of $n$ and comment on its asymptotic time complexity.
+
+\section*{Solutions}
+\begin{minipage}[t]{5cm}
+  \vspace{0pt}
+  \begin{function}[H]
+\DontPrintSemicolon
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{$n$}
+\Output{$s$}
+  $s \leftarrow 0 $\;
+  \If{$n \leq 1 $}{
+    $s \leftarrow 1$\;
+  }
+	\Else{$s \leftarrow n \cdot  factorial(n -1)$}\;
+ \caption{factorial(int n)}
+\end{function}
+\end{minipage}%
+\\
+The time complexity is O(n), because the function for the factorial will be executed n times, since the value of n is being decreased every execution until $n \leq 1$.
+
+\section*{Exercise 6.}
+Give the asymptotic time complexity of the following algorithms, and justify your answers:
+
+\begin{minipage}[t]{5cm}
+  \vspace{0pt}
+  \begin{algorithm}[H]
+\DontPrintSemicolon
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{$n$}
+  $s \leftarrow 0$\;
+  $i \leftarrow 0$\;
+  \While{$i < n$}{
+    $s \leftarrow s+1$\;
+    $i \leftarrow i+1$\;
+  }
+ \caption{}
+\end{algorithm}
+\end{minipage}%
+\hspace{1cm}
+\begin{minipage}[t]{5cm}
+  \vspace{0pt}
+  \begin{algorithm}[H]
+\DontPrintSemicolon
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{$n$}
+  $s \leftarrow 0$\;
+  $i \leftarrow 0$\;
+  \While{$i < n$}{
+ 	$j \leftarrow 0$\;
+    \While{$j < n$}{
+    	$s \leftarrow s+1$\;
+    	$j \leftarrow j+1$\;
+    }
+    $i \leftarrow i+1$\;
+  }
+ \caption{}
+\end{algorithm}
+\end{minipage}
+
+
+\begin{minipage}[t]{5cm}
+  \vspace{0pt}
+  \begin{algorithm}[H]
+\DontPrintSemicolon
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{$n$}
+  $s \leftarrow 0$\;
+  $i \leftarrow 0$\;
+  \While{$i < n$}{
+ 	$j \leftarrow 0$\;
+    \While{$j < n \times n$}{
+    	$s \leftarrow s+1$\;
+    	$j \leftarrow j+1$\;
+    }
+    $i \leftarrow i+1$\;
+  }
+ \caption{}
+\end{algorithm}
+\end{minipage}%
+\hspace{1cm}
+\begin{minipage}[t]{5cm}
+  \vspace{0pt}
+  \begin{algorithm}[H]
+\DontPrintSemicolon
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{$n$}
+  $s \leftarrow 0$\;
+  $i \leftarrow 0$\;
+  \While{$i < n$}{
+ 	$j \leftarrow 0$\;
+    \While{$j < i$}{
+    	$s \leftarrow s+1$\;
+    }
+    $i \leftarrow i+1$\;
+  }
+ \caption{}
+\end{algorithm}
+\end{minipage}
+
+
+\begin{algorithm}
+\DontPrintSemicolon
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{$n$}
+  $s \leftarrow 0$\;
+  $i \leftarrow 0$\;
+  \While{$i < n$}{
+ 	$j \leftarrow 0$\;
+    \While{$j < i$}{
+    	$k \leftarrow 0$\;
+        \While{$k < j$}{
+          $s \leftarrow s+1$\;
+          $k \leftarrow k+1$\;
+        }
+    	$j \leftarrow j+1$\;
+    }
+    $i \leftarrow i+1$\;
+  }
+ \caption{}
+\end{algorithm}
+
+\newpage
+\section*{Solutions}
+\begin{enumerate}
+    \item The complexity of this algorithm is O(n). The while loop in the algorithm will be executed for every n, because i starts at 0. This means the algorithm will need 2x more time when the input is 2x bigger.
+    \item The complexity of this algorithm is $O(n^2)$, because for every n 2 nested while loops are executed. Since i and j start at 0, for every index of the first loop the second loop will b executed n times. At the end the inner loop has been executed $n \cdot n = n^2$ times.
+    \item The complexity of this algorithm is $O(n^3)$. The first while loop is executed n times and the inner is executed $n \cdot n$ times. Which means for every n the algorithm will loop three times through it.
+    \item The complexity of this algorithm is undefined. Since the value of j isn't incrementing during execution, the condition of the inner loop will remain true as soon as $i > 0$, so in that case the while will loop $\infty$ times. This will be the case when the input n $>$ 1.
+    \item The complexity of this algorithm is $O(n^3)$. In the last execution of the algorithm, the outer loop has been executed n times, the middle loop n - 1, since i only can be lower than n and the inner loop n - 2 times, since the j can be only smaller than i. The execution is $n \cdot n - 1 \cdot n - 2 $ which results in $O(n^3)$.
+\end{enumerate}
+
+
+
+\end{document}

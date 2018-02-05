@@ -1,0 +1,166 @@
+% Success! Your submission appears on this page. The submission confirmation number is 104b08bb-bd7f-4182-a923-47229295278c. Copy and save this number as proof of your submission.
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage[ruled, vlined]{algorithm2e}
+\usepackage{mathtools}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Np}{{\mathbb{N}^{>0}}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\hints}[1]{\paragraph{\bf Hints:} #1}
+
+\SetKwProg{Fn}{Function}{}{}
+\SetKwProg{Proc}{Procedure}{}{}
+\SetKwFunction{FloydWarshall}{FloydWarshall}
+\SetKwFunction{print}{print}
+\SetKwFunction{newline}{newline}
+\SetKwFunction{maxProfitCalculator}{maxProfitCalculator}
+\SetKwFunction{DFS}{DFS}
+\SetKwFunction{DFSVisit}{DFSVisit}
+\SetKwFunction{WriteLn}{WriteLn}
+\SetKwFunction{Knapsack}{Knapsack}
+\SetKwFunction{C}{C}
+
+\usetikzlibrary{arrows, positioning}
+
+
+
+\begin{document}
+
+\title{Algorithms \& Datastructures \\ Weekly Assignment 14}
+\date{\today}
+\author{Tony Lopar \\ s1013792}
+\maketitle
+
+\paragraph{Request:} If there are any vague explanations in this assignment. Can you please add a citation of at least one of these vague parts in the feedback? This helps me in recognizing which kind of descriptions I should write different to make it more clear. Thanks in advance.
+\section*{Exercise 1}
+\begin{enumerate}
+  \item True
+  \item True
+  \item True
+  \item False
+  \item True
+  \item True
+  \item True
+  \item False
+  \item False
+  \item True
+  \item True
+\end{enumerate}
+
+\section*{Exercise 2}
+An algorithm for computing the values of twodegree can be achieved using a modified version of DFS. The first modification is that every node should store the number of adjacencies when it's reached by DFS-visit. This can be done by storing the number of neighbors that are in the adjacency list. This value will be named $firstdegree[u]$ for this explanation. The second modification is that when we we want to put the node in finished state, we should take the sum of $firstdegree[]$ for all adjacencies from the node we want to finish. Since a node in DFS is only finished when all neighbors are visited, we know that all neighbors in the adjacency list will already have a value of $firstdegree[]$ defined. This second step can be implemented in the loop through adjacencies in the DFS-visit. After a neighbor has been visited we can add it's value of firstdegree to the value of twodegree. This will keep the complexity equal to the original complexity of DFS which is $\bigO (|V| + |E|)$.
+
+\begin{algorithm}[h]
+  \DontPrintSemicolon
+
+    \Proc{\DFS{G}}{
+        \ForEach{$u \in V[G]$}{
+            $color[u] \leftarrow white$ \;
+            $\pi[u] \leftarrow nil$ \;
+            $firstdegree[u] \leftarrow nil$ \;
+            $twodegree[u] \leftarrow nil$ \;
+        }
+        $time \leftarrow 0$ \;
+        \ForEach{$u \in V[G]$}{
+            \If{$color[u] = white$}{
+                \DFSVisit{u} \;
+            }
+        }
+    }
+
+    \Proc{\DFSVisit{}}{
+	    $color[u] \leftarrow gray$ \;
+	    $time \leftarrow time + 1$ \;
+	    $d[u] \leftarrow time$ \;
+      $firstdegree[u] \leftarrow length(Adj[u])$ \;
+	    \ForEach{$v \in Adj[u]$}{
+	        \If{$color[v] = white$}{
+	            $\pi[v] \leftarrow u$ \;
+	            \DFSVisit{v} \;
+          }
+          $twodegree[u] \leftarrow twodegree[u] + firstdegree[v]$ \;
+	        $color[u] \leftarrow black$ \;
+	        $time \leftarrow time + 1$ \;
+	        $f[u] \leftarrow time$ \;
+	    }
+    }
+
+    \caption{Twodegree $\bigO (|V| + |E|)$}
+\end{algorithm}
+
+\newpage
+\section*{Exercise 3}
+An efficient algorithm would be to first execute fordFulkerson on the network and take the resulted residual graph. In this residual graph we can try to find paths from the source and paths from the sink. If there is between two nodes only a path from the sink possible, then the edge that's between these two nodes in the network is a bottleneck since the flow through the edge is equal to the capacity.
+
+\section*{Exercise 4}
+The extension that I will do is adding the the number of nodes below the leftChild + 1 for the leftChild. This number indicates how many nodes there are below x on the left side. I will call this value $nodesleft$. In order to find the k-smallest value we should check whether k is higher, lower of equal to the root. If it's lower than $nodesleft$ we continue to the $x.leftChild$. If k = equal to $nodesleft$ we return this node. Otherwise, we continue to $x.rightChild$ and substract $1 + x.nodesleft$ from k, since this is the number of nodes smaller than the right child. In general the following recursion will take place in node x:
+$$ kSmallest(x, k) =
+\begin{cases}
+  n &\mbox{if } k = x.nodesleft \\
+  kSmallest(x.leftChild, k) &\mbox{if } k < x.nodesleft \\
+  kSmallest(x.rightChild, k - (1 + x.nodesleft)) &\mbox{if } k > x.nodesleft
+\end{cases}$$
+
+\section*{Exercise 5}
+\begin{enumerate}
+  \item A possible bottom-up approach is to first compute the possible profit for one item that you can carry. After this you want to see whether adding another item let's the sum of the weights exceed the maximum weight. If so, then we should pick the result of n - 1 since we cannot add item n anymore. Otherwise we should take the maximum value of either the result of n - 1 with total weight w or the result of n-1 with total weight $W - w_i$. The first option is the best result of size n-1 without adding this product. The other is the best result with adding this product. The third case is the 0 which ensures the recursion has a base case and doesn't iterate forever in amounts of items less than 1.
+
+  The described recursive formula is as follows:
+  $$ C(n, W) =
+  \begin{cases}
+    0 &\mbox{If } n \leq 0 \\
+    C(n-1, W) &\mbox{If } w_n > W \\
+    max(C(n-1, W), C(n-1, W-w_n) + v_n) &\mbox{Otherwise}
+
+  \end{cases}$$
+  \item The Procedure which prints the maximum value may be defined as follows:
+
+  \begin{algorithm}[h]
+    \DontPrintSemicolon
+    $values[] \leftarrow \text{Empty array}$ \;
+
+    \Proc{\Knapsack{n, W, items}}{
+        \If{$n \leq 0$}{
+            \KwRet{0} \;
+        } \Else {
+          \C{n, W} \;
+          \print{$values$} \;
+          \KwRet{$\left(\sum_{i = 1}^{n} values[i]\right)$}
+        }
+    }
+
+      \Proc{\C{n, W}}{
+          \ForEach{$i = 1 \to n$}{
+              \If{$w_i > W$}{
+                  \KwRet{\C{$n - 1, W$}}
+              } \Else {
+                  \If{\C{$n - 1, W - w_i$} + $v_i >$ \C{$n - 1, W$}}{
+                      $values.add[v_i]$ \;
+                      \KwRet{\C{$n - 1, W - w_i$} + $v_i$}
+                } \Else {
+                      \KwRet{\C{$n - 1, W$}}
+                }
+                }
+          }
+      }
+
+      \caption{Knapsack problem}
+  \end{algorithm}
+\end{enumerate}
+
+\end{document}

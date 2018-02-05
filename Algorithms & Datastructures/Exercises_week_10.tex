@@ -1,0 +1,250 @@
+% The submission confirmation number is c9a8e895-42d7-420d-938b-30c6c3a66f1e
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage[ruled, vlined]{algorithm2e}
+\usepackage{mathtools}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Np}{{\mathbb{N}^{>0}}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\hints}[1]{\paragraph{\bf Hints:} #1}
+
+\SetKwProg{Fn}{Function}{}{}
+\SetKwProg{Proc}{Procedure}{}{}
+\SetKwFunction{FloydWarshall}{FloydWarshall}
+\SetKwFunction{print}{print}
+\SetKwFunction{newline}{newline}
+\SetKwFunction{printPaths}{printPaths}
+\SetKwFunction{MatrixChainMultiply}{MatrixChainMultiply}
+\SetKwFunction{findHighestSubArray}{findHighestSubArray}
+
+\usetikzlibrary{arrows, positioning}
+
+\begin{document}
+
+\title{Algorithms \& Datastructures \\ Weekly Assignment 10}
+\date{\today}
+\author{Tony Lopar \\ s1013792}
+\maketitle
+\section*{Exercise 1}
+The matrices $D^{(0)}$ until $D^{(6)}$ will be as follows:
+\[
+D^{(0)} =
+  \begin{pmatrix}
+    0 & \infty & \infty & \infty & -1 & \infty \\
+    1 & 0 & \infty & 2 & \infty & \infty \\
+    \infty & 2 & 0 & \infty & \infty & -8 \\
+    -4 & \infty & \infty & 0 & 3 & \infty \\
+    \infty & 7 & \infty & \infty & 0 & \infty \\
+    \infty & 5 & 10 & \infty & \infty & 0
+  \end{pmatrix}
+D^{(1)} =
+  \begin{pmatrix}
+    0 & \infty & \infty & \infty & -1 & \infty \\
+    1 & 0 & \infty & 2 & 0 & \infty \\
+    \infty & 2 & 0 & \infty & \infty & -8 \\
+    -4 & \infty & \infty & 0 & -5 & \infty \\
+    \infty & 7 & \infty & \infty & 0 & \infty \\
+    \infty & 5 & 10 & \infty & \infty & 0
+  \end{pmatrix}
+  \]
+  \[
+D^{(2)}=
+  \begin{pmatrix}
+    0 & \infty & \infty & \infty & -1 & \infty \\
+    1 & 0 & \infty & 2 & 0 & \infty \\
+    3 & 2 & 0 & 4 & 2 & -8 \\
+    -4 & \infty & \infty & 0 & -5 & \infty \\
+    8 & 7 & \infty & 9 & 0 & \infty \\
+    6 & 5 & 10 & 7 & 5 & 0
+  \end{pmatrix}
+D^{(3)}=
+  \begin{pmatrix}
+    0 & \infty & \infty & \infty & -1 & \infty \\
+    1 & 0 & \infty & 2 & 0 & \infty \\
+    3 & 2 & 0 & 4 & 2 & -8 \\
+    -4 & \infty & \infty & 0 & -5 & \infty \\
+    8 & 7 & \infty & 9 & 0 & \infty \\
+    6 & 5 & 10 & 7 & 5 & 0
+  \end{pmatrix}
+  \]
+  \[
+D^{(4)}=
+  \begin{pmatrix}
+    0 & \infty & \infty & \infty & -1 & \infty \\
+    -2 & 0 & \infty & 2 & -3 & \infty \\
+    0 & 2 & 0 & 4 & -1 & -8 \\
+    -4 & \infty & \infty & 0 & -5 & \infty \\
+    5 & 7 & \infty & 9 & 0 & \infty \\
+    3 & 5 & 10 & 7 & 2 & 0
+  \end{pmatrix}
+D^{(5)}=
+  \begin{pmatrix}
+    0 & 6 & \infty & 8 & -1 & \infty \\
+    -2 & 0 & \infty & 2 & -3 & \infty \\
+    0 & 2 & 0 & 4 & -1 & -8 \\
+    -4 & 2 & \infty & 0 & -5 & \infty \\
+    5 & 7 & \infty & 9 & 0 & \infty \\
+    3 & 5 & 10 & 7 & 2 & 0
+  \end{pmatrix}
+  \]
+  \[
+D^{(6)}=
+  \begin{pmatrix}
+    0 & 6 & \infty & 8 & -1 & \infty \\
+    -2 & 0 & \infty & 2 & -3 & \infty \\
+    -5 & -3 & 0 & -1 & -6 & -8 \\
+    -4 & 2 & \infty & 0 & -5 & \infty \\
+    5 & 7 & \infty & 9 & 0 & \infty \\
+    3 & 5 & 10 & 7 & 2 & 0
+  \end{pmatrix}
+\]
+
+\newpage
+\section*{Exercise 2}
+The modified algorithm and the printPath method can be found in algorithm~\ref{Alg:A1}. In this algorithm we still need the D-matrix in order to find the minimum path from which we can store the predecessor. When we know the predecessor matrix, we can print the path for every pair i and j. Since we know the predecessors it's easier to start printing the last vertex in the path. Every predecessor we will put in front of the string then which will be printed if the first vertex of the path has been reached.
+\begin{algorithm}[h]
+  \DontPrintSemicolon
+  \Proc{\FloydWarshall{matrix $D^{(0)}, matrix \enspace \Pi^{(0)}$}}{
+  \For{k = 1 \KwTo n}{
+    $D^{(k)}$ = new n x n matrix \;
+    $\Pi^{(k)}$ = new n x n matrix \;
+    \For{i = 1 \KwTo n}{
+      \For{j = 1 \KwTo n}{
+        \If{$D^{(k-1)}[i][j] \leq D^{(k-1)}[i][k] + D^{(k-1)}[k][j]$}{
+          $D^{(k)}[i][j] = D^{(k-1)}[i][j]$ \;
+          $\Pi^{(k)}[i][j] = i$ \;
+        }
+        \Else{
+          $D^{(k)}[i][j] = D^{(k-1)}[i][k] + D^{(k-1)}[k][j]$ \;
+          $\Pi^{(k)}[i][j] = k$ \;
+        }
+        % $D^{(k)}[i][j] = min (D^{(k-1)}[i][j], D^{(k-1)}[i][k] + D^{(k-1)}[k][j])$ \;
+        % $\Pi^{(k)}[i][j] = min (D^{(k-1)}[i][j], D^{(k-1)}[i][k] + D^{(k-1)}[k][j])$ \;
+      }
+    }
+  }
+    \KwRet{$\Pi^{(n)}$} \;
+  }
+
+  \Fn{\printPaths{matrix $\Pi^{(n)}$}}{
+    \For{i = 1 \KwTo n}{
+      \For{j = 1 \KwTo n}{
+        $path \leftarrow ""$  \emph{an empty string} \;
+        \If{$i \neq j \& \Pi[i][j] \neq \infty$}{
+          $current \leftarrow j$ \;
+          \While{$i \neq current$}{
+            $path \leftarrow current + path$ \;
+            $current \leftarrow \Pi[i][current]$
+          }
+          \print{$i + path$} \;
+          \newline{} \;
+        }
+        \Else{
+          \print("Error: No path from i to j") \;
+          \newline{} \;
+        }
+      }
+    }
+  }
+
+    \caption{Floyd-Warshall for predecessors} \label{Alg:A1}
+\end{algorithm}
+
+\newpage
+\section*{Exercise 3}
+We can use the already known list of s to multiply the matrices in the most efficient way. We should split the array recursive in the two sides of the optimal breaking of i and j. If we calculate both of these sides and then multiply the results we've calculated the array multiplication in the most efficient way. If we only have one matrix, then we may just have to return this. The base case of the algorithm will be when the array has two elements, since then it doesn't matter where we place the brackets, so we may multiply them then. If we have already computed both sides of the breaking in the most efficient way we may multiply these two since it's the next most efficient breaking.
+
+\begin{algorithm}[h]
+  \DontPrintSemicolon
+  \Proc{\MatrixChainMultiply{A, s, i, j}}{
+    \If{i = j}{
+      \KwRet{A[i]}
+    }
+      \If{i + 1 = j}{
+        A[i] * A[j] \;
+      } \Else {
+        \KwRet{\MatrixChainMultiply{A, s, i, s[i, j]} * \MatrixChainMultiply{A, s, s[i, j] + 1, j}}
+      }
+
+  }
+
+    \caption{Matrix chain multiplication algorithm} \label{Alg:A2}
+\end{algorithm}
+
+\newpage
+\section*{Exercise 4}
+\begin{enumerate}[label= \alph* )]
+  \item We could do this in a similar way as the matrix chain order. We split up the array in smaller pieces and calculate the sum of these. We store all these values and return them to calculate the values of a bigger piece of the array. A big difference is that in the matrix chain order we had to compute the lowest value for the computations and now the highest value for the sum. After the algorithm we iterate through all found sums to determine the highest. After this iteration we return the i and j value of the highest sum.
+  \begin{algorithm}[h]
+    \DontPrintSemicolon
+    \Proc{\findHighestSubArray{A}}{
+      \For{i = 1 \KwTo n}{
+        $sum[i, i] = 0$ \;
+      }
+
+      \For{l = 2 \KwTo n}{
+        \For{i = 1 \KwTo n - l + 1}{
+          $j = i + l - 1$ \;
+          $sum[i, j] = \infty$ \;
+
+          \For{k = 1 \KwTo j - 1}{
+            $q = sum[i, k] + sum[k + 1, j]$ \;
+
+            \If{$q > sum[i, j]$}{
+              $sum[i, j] = q$ \;
+            }
+          }
+        }
+        $highestSum \leftarrow 0$ \;
+        \ForEach{sum[i,j]}{
+          \If{$highestSum < sum[i,j]$}{
+            $highestSum \leftarrow sum[i,j]$ \;
+          }
+        }
+        \KwRet{$highestSum.i \& highestSum.j$}
+      }
+
+    }
+
+      \caption{Highest subarray $\bigO (n^3)$} \label{Alg:A3}
+  \end{algorithm}
+  \item By an addition of sum $A[i, \dots , j - 1]$ and j. If we have the sum of the subarray before, we may extend it with one element if we just add this to the sum.
+  \item Using this fact we can iterate trough the list and add the next element to a the sublist. If this gives a higher result than $M(j - 1)$ than we found a new highest subarray. Otherwise we should start at the new element and save the old list.
+  \begin{algorithm}[h]
+    \DontPrintSemicolon
+    \Proc{\findHighestSubArray{A}}{
+        $highestSum \leftarrow 0$ \;
+        $highestArray \leftarrow nil$ \;
+        $currentSubArray \leftarrow nil$ \;
+        \For{i = 1 \KwTo n}{
+          $currentSubArray.add(i)$ \;
+          \If{$highestSum < highestSum + A[i]$}{
+            $highestSum \leftarrow highestSum + A[i]$ \;
+            $highestArray \leftarrow currentSubArray$ \;
+          } \Else {
+            $currentSubArray \leftarrow nil$ \;
+          }
+        }
+        \KwRet{$highestArray[1] \& highestArray[highestArray.length]]$}
+
+    }
+
+      \caption{Highest subarray non-recursive $\bigO (n)$} \label{Alg:A4}
+  \end{algorithm}
+\end{enumerate}
+
+\end{document}

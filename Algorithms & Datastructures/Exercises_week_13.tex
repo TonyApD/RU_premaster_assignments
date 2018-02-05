@@ -1,0 +1,101 @@
+% Success! Your submission appears on this page. The submission confirmation number is 82131458-2aa0-47a3-9f75-662ac51d9301. Copy and save this number as proof of your submission.
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage[ruled, vlined]{algorithm2e}
+\usepackage{mathtools}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Np}{{\mathbb{N}^{>0}}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\hints}[1]{\paragraph{\bf Hints:} #1}
+
+\SetKwProg{Fn}{Function}{}{}
+\SetKwProg{Proc}{Procedure}{}{}
+\SetKwFunction{FloydWarshall}{FloydWarshall}
+\SetKwFunction{print}{print}
+\SetKwFunction{newline}{newline}
+\SetKwFunction{maxProfitCalculator}{maxProfitCalculator}
+
+\usetikzlibrary{arrows, positioning}
+
+\begin{document}
+
+\title{Algorithms \& Datastructures \\ Weekly Assignment 13}
+\date{\today}
+\author{Tony Lopar \\ s1013792}
+\maketitle
+\section*{Exercise 1}
+A possible algorithm would to throw n coins and store the results in a list. The list will only contain 0 and 1 values. At the end we can concatimine all the values in the list as a binary numbeer and convert it to a decimal number.
+
+The possibility of number k being generated depends on the flips of all coins since if a coin is flipped and $2^{i - 1}$ is added to the sum we may only get k when it's higher. The principle is the same as binary numbers where every number only has one certain order of digits. The chance for the first coin is $\frac{1}{2}$ and the chance for every next coin gives the value necessary for i is also $\frac{1}{2}$. This gives a chance on a certain i as $\frac{1}{2^n}$. I define $\mathbb{E}(C_i)$ as the chance that coin i will be flipped to the necessary value for the sum which forms i.
+
+A possible algorithm could be an algorithm that throws n coins. The output of the algorithm will be a sum of results of the thrown coins. We will define $C_i$ as result of the coin. If the coin returned 1, then $C_i = 2^{i - 1}$. Otherwise $C_i = 0$. The algorithm should return the sum of all values of $C_i$.
+
+\begin{align*}
+  % \textbf{Pr}[\text{A certain number i is generated}] &= \frac{1}{2^n} \\
+  \textbf{Pr}[\text{A certain number k is generated}] &= \mathbb{E}
+  \left[
+    \sum_{1 \leq i \leq n}(C_i) = k
+  \right] \\
+  % &= \sum^{n}_{i = 1} \mathbb{E} ( C_i ) \\
+  &= \mathbb{E} ( C_1 ) \cdot \mathbb{E} ( C_2) \cdot \mathbb{E} ( C_3) \cdot \mathbb{E} ( C_n) \\
+  % &= \sum^{n}_{i = 1} \textbf{Pr} [certain i is generated]] \\
+  &= \frac{1}{2} \cdot \frac{1}{2} \cdot \frac{1}{2} \dots \cdot \frac{1}{2} \\
+  &= \left( \frac{1}{2} \right)^n \\
+  &= \frac{1}{2^n}
+\end{align*}
+
+\section*{Exercise 2}
+\begin{enumerate}
+  \item We may run Rand-Prime and return ``not prime'' when rand-prime returns this and otherwise return the result Det-Prime.
+  \item The average running time is $101 T(n)$, since Rand-prime runs in T(n) and calls Det-prime which runs in $100T(n)$.
+  \item When the input is not prime, in $50\%$ of the cases Rand-prime will give ``not prime'' already. In the other $50\%$ Det-prime will be called. This means that Rand-prime will always be executed and Det-prime only in $50\%$ of the cases. This gives an average running time of $T(n) + 50T(n) = 51 T(n)$.
+\end{enumerate}
+
+\section*{Exercise 3}
+A possible algorithm could be to pick a random color for each vertex independently. For each edge $e \in E$ the probability that e satisfies the requirement is $\frac{2}{3}$. When we define the indicator $X_e$ for $e \in E$ which defines the probability that e is satisfied.
+\begin{align*}
+  \mathbb{E}[\text{number of satisfied edges}] &= \mathbb{E}\left[\sum_{e \in E}X_e\right] \\
+    &= \sum_{e \in E} \mathbb{E}[X_e] \\
+    &= \sum_{e \in E} \textbf{Pr} [\text{e is satisfied}] \\
+    &= \frac{2}{3}|E|
+\end{align*}
+
+\section*{Exercise 4}
+The number of $b^*$ is always updated for the first bid. After the first bid all bids may be higher or lower than the previous one. If the bid is lower or equal the value of $b^*$ should not be updated. If it's higher it should be updated. If we let $X_i = 1$ if the i-th bid is higher than all previous bids and $X_i = 0$ otherwise. Then we may compute the number of updates as follows:
+\begin{align*}
+  \mathbb{E}[\text{number of times $b^*$ is updated}] &= \mathbb{E}
+  \left[
+  \sum_{1 \leq i \leq n} X_i
+  \right] \\
+  &= \sum^{n}_{i = 1} \mathbb{E}( X_i ) \\
+  &= \sum^{n}_{i = 1} \frac{1}{n}
+\end{align*}
+
+\section*{Exercise 5}
+In the first step we only have one root node. The second node can only have an edge to the first node which gives one leave. The third node can have an edge to the first or second node. When there is an edge to the first node, there will be two leaves, otherwise there will still remain one leave. The fourth node may have an edge to one of the three previous nodes. This means that the k-th node may go the one of the first k-1 nodes. The chance that a node is forming a new leave is $X_i = \frac{1}{i-1}$.
+
+\begin{align*}
+  \mathbb{E}[\text{number of leaves in the tree}] &= \mathbb{E}
+  \left[
+  \sum_{2 \leq i \leq n} X_i
+  \right] \\
+  &= \sum^{n}_{i = 2} \mathbb{E}( X_i ) \\
+  &= \sum^{n}_{i = 2} \frac{1}{n-1}
+\end{align*}
+
+\end{document}

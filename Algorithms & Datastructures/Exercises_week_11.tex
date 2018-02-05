@@ -1,0 +1,129 @@
+% Success! Your submission appears on this page. The submission confirmation number is d6d0225e-cec5-440a-b96a-6cb6aa45fd84. Copy and save this number as proof of your submission.
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage[ruled, vlined]{algorithm2e}
+\usepackage{mathtools}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Np}{{\mathbb{N}^{>0}}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\hints}[1]{\paragraph{\bf Hints:} #1}
+
+\SetKwProg{Fn}{Function}{}{}
+\SetKwProg{Proc}{Procedure}{}{}
+\SetKwFunction{FloydWarshall}{FloydWarshall}
+\SetKwFunction{print}{print}
+\SetKwFunction{newline}{newline}
+\SetKwFunction{maxProfitCalculator}{maxProfitCalculator}
+
+\usetikzlibrary{arrows, positioning}
+
+\begin{document}
+
+\title{Algorithms \& Datastructures \\ Weekly Assignment 11}
+\date{\today}
+\author{Tony Lopar \\ s1013792}
+\maketitle
+\section*{Exercise 1}
+The maximum profit for location i depends whether we may open a shop on that location. This depends on the distance to the previous location on the highway where a shop opened. The distance between the shops should at least be k.
+
+A possible solution could be to perform a bottom-up algorithm. In this algorithm we should start by computing the maximum profit until the first store on the road. After this we should compute the maximum profit for the next one. This computation may rely on the computation for the maximum profit of on of the previous stores on the highway that may be opened. This value may be used since this value already contains the maximum profit for the stores the has may be opened before the store on the current location.
+
+However, we can not always take the previous possible value as maximum profit. An example in which this is the case is when we have $k = 2, m_1 = 2, m_2 = 3$ and $m_3 = 5$ and $p_1 = 40, p_2 = 20$ and $p_3 = 30$. The distance between $m_3$ and $m_2$ is large enough in this example, but the distance between $m_1$ and $m_2$ is not. This means that the computation of the max profit on location 2 doesn't depend on the computation of location 1 which is larger. This means that if we would take the max profit of the previous possible store we would skip any possible higher possible profit that's possible with a store before this. This is why we should check the previous stores until we reach a location on which the computation of the max profit for the location already relys.
+
+In the algorithm we will have an array $Profit$ which memorizes the profit for the stores which we already computed. At the end of the algorithm we will iterate through the whole array to find the maximum value which we should return. The algorithm is shown in algorithm~\ref{Alg:A1}.
+\begin{algorithm}[h]
+  \DontPrintSemicolon
+  \Proc{\maxProfitCalculator{m, p, n, k}}{
+    $Profit[] \leftarrow$ new Array of size n \;
+    \For{$i = 1$ \KwTo n}{
+      \If{i = 1}{
+        $Profit[i] \leftarrow p_i$ \;
+      }
+      \Else{
+        \For{$j = i - 1$ \KwTo 1}{
+          \If{$m_i - m_j < k$}{
+          \If{$Profit[i] < Profit[j] + p_i$}{
+              $Profit[i] \leftarrow  Profit[j] + p_i$ \;
+            }
+          }
+        }
+      }
+    }
+    $heighestprofit \leftarrow 0$ \;
+    \For{i = 1 \KwTo n}{
+      \If{$Profit[i] > heighestprofit$}{
+        $heighestprofit \leftarrow Profit[i]$ \;
+      }
+    }
+    \KwRet{$heighestprofit$}
+
+  }
+
+    \caption{Max profit computation} \label{Alg:A1}
+\end{algorithm}
+
+The algorithm will have a complexity of $\bigO (n^2)$ since there are two for loops. The second for loop will iterate back to the beginning in the worst case.
+
+\newpage
+\section*{Exercise 2}
+\begin{enumerate}[label= \alph* )]
+  \item We can compute the number of paths possible from each cell by recursively checking the number of possible paths for the cells to which a move is possible. The k-value of the cell on M[0,0] should be 1 for the computation. From this cell we perform a recursive call to the cell on the left side and below and assign the sum of the value of the cell above and right to it. We should take the value of the left and above cell since we only may reach the cell from one of these cells. This means that we define the value of $P[i,j,k]$ as follows:
+
+  \[
+      P[i,j,k] = \left\{\begin{array}{lr}
+          1 & \text{for } i = 0 \text{ and } j = 0 \\
+          P[i - 1,j,k] & \text{for } j = 0 \text{ and } i \geq 1 \\
+          P[i,j-1,k] & \text{for } i = 0 \text{ and } j \geq 1 \\
+          P[i - 1,j,k] + P[i,j-1,k] & \text{for } i \text{ and } j \geq 1
+          \end{array}\right.
+    \]
+
+  We should do this until we reach the cell which is in the lowerright corner. Finally P[i,j,k] will have the total number of k-paths. In the example of the exercise the k-values will be as follows:
+  \begin{center}
+  \begin{tabular}{| c | c | c |}
+    \hline
+    1 & 1 & 1 \\ \hline
+    1 & 2 & 3 \\ \hline
+    1 & 3 & 6 \\
+    \hline
+  \end{tabular}
+\end{center}
+We see that there are 6 possible paths to M[i, j] since we may reach this cell from one of the three paths that has been taken to the left cell or one of the three paths that has been taken from the cell above.
+\item
+% The algorithm could go through all the possible paths and memorize the sum of the path. When the sum of the path becomes greater than the value of C, we should abort this path. If a path reaches the cell M[m,n] and has C as value of the sum we should increment the parameter which keeps track of the number of C-paths with one. At the end of the algorithm we should return this value.
+
+The algorithm keep a list of possible values for the sum of the possible paths until the cell. Therefore we can can iterate through every cell and assign the sum of the k-path to the cell left and below. We could start by iterating through the cells on the top row and continue with the next row if we finished this row. So, at the end we iterated through $m \cdot n$ cells. In every cell we should assign put the values of the list with possible C-values in the cells above and below. We should increment these values with the values of the cells. At the end we will have in M[i,j] a list with the sums of the k-paths to it. This list will have same size as the value $P[i, j, k]$ since all possible paths put there sum in this list. In this list we can check how many values sums are equal to C.
+\end{enumerate}
+
+\newpage
+\section*{Exercise 3}
+\begin{enumerate}[label= \alph* )]
+  \item In order to find the value of L[i,j] we may take the character at position i and iterate through the characters of the string form j to i until we have found a character that's equal, so where we have s[i] = s[k] where $i < k \leq j$. In this case we've found a palindrome of length 2. In order to get the lenght of the total palindrome in this subsequence we should find the longest palindrome of $L[i + 1, k - 1]$ by a recursive call. This means the value of $L[i, j]$ will be $L[i + 1, k - 1] + 2$ since there is a palindrome of 2 around the palindrome of the subsequence.
+  \item
+  A possible solution to this problem would be to first find the longest palindrome in smaller subsequences and then check whether there is a longer palindrome possible. The result of the smaller sequences may be stored in a twodimensional array. This array will should memorize the lenght of the longest palindrome between every i and j. In the longer sequences we should check whether two smaller already computed subsequences may give a higher value for the longest palindrome. The value that should be stored in the array is defined as follows:
+  \[
+      L[i,j] = \left\{\begin{array}{lr}
+          2 & \text{for } j = i + 1 \text{ or }  i = j + 1 \text{ and s[i] = s[j]} \\
+          L[i + 1,j - 1] + 2 & \text{for } s[i] = s[j] \\
+          max(L[ i,j-1], L[i+1, j]) & \text{Otherwise}
+          \end{array}\right.
+    \]
+After executing the algorithm the value $L[1, j]$ will contain the length of the longest palindrome. The algorithm requires two for loops. One for the value of i and one for the value of j which make the complexity of the algorithm $\bigO (n^2)$.
+\end{enumerate}
+
+\end{document}
