@@ -1,0 +1,248 @@
+%
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+
+
+\newcommand{\exercise}[2]{\subsection*{Exercise #1}{#2}}
+\newcommand{\exerciseenum}[2]{\subsection*{Exercise #1}{\begin{enumerate}[a)]#2\end{enumerate}}}
+% We defined our own commands to make it easy to present all the
+% exercises in the same style. The first one does not automatically
+% start an 'enumerate' list, the second one does.
+% The [2] means that our command needs two arguments.
+% The #1 and the #2 indicate where we use these arguments in the
+% command.
+% There are several ways to have automatic numbering for the exercises,
+% but here we have chosen to use a subsection for this and use manual
+% numbering. This is because maybe not everyone will be able to do hand in
+% all exercises.
+% Note that we add the '*' to make sure that the subsection is not numbered.
+% (Since we don't have a \section, the numbers for a subsection would be
+% ugly like 0.1, 0.2 et cetera.
+% The environment 'enumerate' automatically numbers the items in this list.
+% The optional [a)] makes sure that the list will be like a), b), c) et cetera.
+
+
+
+\newcommand{\abs}[1]{\ensuremath{\left|\, #1 \,\right|}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor\, #1 \,\right\rfloor}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil\, #1 \,\right\rceil}}
+% Abbreviations for the absolute value, ceil and floor function.
+
+\newcommand{\set}[1]{\ensuremath{\left\{{#1}\right\}}}
+% This command puts curly braces around its argument, so it becomes
+% a set. The \left and \right make sure that the braces grow in size
+% if the contents of the set are large symbols.
+
+\newcommand{\setbuild}[2]{\ensuremath{\set{{#1}\mid{#2}}}}
+% We also introduce a shortcut for using the set builder notation.
+% Do you understand what it does?
+
+\newcommand{\seq}[1]{\ensuremath{\left\{{#1}\right\}}}
+% This puts curly braces to define a sequence.
+% Note that this is the same as the definition for a \set.
+
+% And the next series of commands gives you some of the default sets
+% that were in the slides.
+\newcommand{\TT}{\ensuremath{\mathbb{T}}}
+\newcommand{\FF}{\ensuremath{\mathbb{F}}}
+\newcommand{\NN}{\ensuremath{\mathbb{N}}}
+\newcommand{\NNp}{\ensuremath{\mathbb{N}^{+}}}
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\ZZp}{\ensuremath{\mathbb{Z}^{+}}}
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}}
+\newcommand{\QQp}{\ensuremath{\mathbb{Q}^{+}}}
+\newcommand{\RR}{\ensuremath{\mathbb{R}}}
+\newcommand{\RRp}{\ensuremath{\mathbb{R}^{+}}}
+\newcommand{\CC}{\ensuremath{\mathbb{C}}}
+
+% An the next command gives a shorthand for the power set of a given set.
+\newcommand{\power}[1]{\ensuremath{{\cal P}\left({#1}\right)}}
+
+\title{Mathematical Structures\\Assignment 2}
+
+% Replace the placeholders by your real name, student number and
+% group (for the exercise hours)
+\author{Tony Lopar \\ s1013792 \quad Group 1}
+
+% In LaTeX everything before \begin{document} is called pre-amble.
+% This is where you put all important settings. The real document
+% starts after \begin{document}.
+\begin{document}
+\maketitle
+% \maketitle makes sure that the title is shown on the first page of
+% the document.
+
+
+% Now we use the command we defined earlier and give it the proper two
+% parameters.
+% Because the second parameter is long, we put a % directly after the
+% opening curly brace {. This is not needed but makes the source file
+% look a bit better.
+\exerciseenum{12}{%
+\item%a
+$f(n)=\pm n$
+is not a function from $\ZZ$ to $\RR$, because every value $n \in \mathbb{Z}$ there will have two values as result, namely $n, -n \in \mathbb{R}$. Since the definition of functions defines that for every value of the function only one value may be the result, this statement is false.
+
+% Because we don't want to hand in b) we tell enumerate (enum) to skip 1
+% number on the first level (i).
+\addtocounter{enumi}{1}
+\item%c
+$f(n)=\frac{1}{n^2-4}$.
+is a function from $\ZZ$ to $\RR$,
+because every $\mathbb{Z}$ that we can fill in for n, the result will only contain one value of $\mathbb{R}$ as result.
+}
+
+\exerciseenum{13}{%
+\item%a
+If we consider the
+function that assigns to each nonnegative integer its last digit
+then its domain is $[0, \infty]$
+and its range is $[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]$
+\item%b
+If we consider the
+function that assigns the next largest integer to a positive integer
+then its domain is $\{\mathbb{Z^+}\}$
+and its range is $[\mathbb{Z^+} - \{1\}]$
+}
+
+\exerciseenum{14}{%
+\addtocounter{enumi}{2}
+\item%c
+The function $f:\ZZ\to\ZZ$ where $f$ is defined by
+$f(n)=n^3$
+is one-to-one, because every element from the codomain can only be assigned by one integer. For example $f(1) = 1$ and $f(-1) = - 1$ which shows that negative and positive integer have a different result.
+
+\item%d
+The function $f:\ZZ\to\ZZ$ where $f$ is defined by
+$f(n)=\ceil{\frac{n}{2}}$
+is not one-to-one, because for example $f(1)$ and $f(2)$ will both assign the value 1 in the codomain. Since the definition of one to one states that every value in the codomain may be assigned at most one time from the domain, this function is not one-to-one. $f(n) = f(y) => fn^2 = y^2 => n = y$
+}
+
+\exerciseenum{15}{%
+\addtocounter{enumi}{3}
+\item%d
+We consider the function that maps students in a discrete mathematics class
+to their home town.
+This function is one-to-one if all the students from the class live in different towns. There doesn't exists a town where more than 1 student from the class lives in.
+%(Or: This function can never be one-to-one because \dots)
+}
+
+\exerciseenum{16}{%
+\item%a
+The function $f:\NN\to\NN$ is
+one-to-one but not onto,
+if we define it like
+\[
+f(n) = n^2
+\]
+This is because every $n \in \mathbb{N}$ has it's own unique squared value, so this means it's one to one. The function is not onto, because for example $f(x) = 3$, doesn't have an $x \in \mathbb{N}$.
+
+\addtocounter{enumi}{1}
+\item%c
+The function $f:\NN\to\NN$ is
+both onto and one-to-one (but different from the identity function),
+if we define it like
+\[
+f(n) = |n - 1|
+\]
+This is because for every value $n \in \mathbb{N}$, we will only have one result that is an element of $\mathbb{N}$. If we take $f(n) = y$, we can write $|n - 1| = |y - 1|$ which .
+}
+
+\exercise{17}{%
+The function $f:\RR\to\RR$ given by $f(x)=e^x$ is not invertible because for every $x \in \mathbb{R}$ the assigned value in the codomain can only be $>$ 0. This is because when we take a negative x, the function will be in the form of $\frac{1}{e^x}$. Since there is no x that produces a negative number, these values of the codomain don't have a preimage in the domain, which means the function is not surjective. The function is one-to-one, because for every $x, y \in A \Longrightarrow f(x) = f(y) \Longrightarrow e^x = e^y \Longrightarrow \ln(e^x) = \ln(e^y) \Longrightarrow x = y$, so every image in the codomain can only have one preimage in the domain. Since the function is not surjective, the function is not invertible.
+However, if we restrict the codomain to $\RRp$ the function will be onto, because the numbers in the codomain that didn't have a preimage are now removed.
+}
+
+\exercise{18}{%
+We have $f(x)$ and $(f \circ g)(x)$ which are both injective. Let's assume $g: A \longrightarrow B$ and $f: B \longrightarrow C$. If we make $g(x)$ not injective, we need to have two elements in A that point to the same $y \in B$, so let's take $x_1$ and $x_2$ where $f(x_1) = f(x_2) = y$. If we have an element $z \in C$, we may reach this element from at most one $x \in A$, because $f \circ g$ is injective. This means that $(f \circ g)(x_1) \neq (f \circ g)(x_2)$ has to be true. If $g(x)$ is not injective the case will be as follows: $(f \circ g)(x_1) = (f \circ g)(x_2) = z$, since the $g(x)$ results the same $y \in B$ for $g(x_1)$ and $g(x_2)$ which is used to find $z \in C$. This means that $g(x)$ cannot be not injective.
+}
+
+\exercise{19}{%
+Assume that $A$ and $B$ are arbitrary finite sets such that $\abs{A}=\abs{B}$.
+If we assume that f is one-to-one, this means that every element in the codomain is assigned by a value of the domain. If this would not be onto, then $\abs{B}$ should have at least one element that is not in A, which makes B one element greater. Since $\abs{A} = \abs{B}$ this is not allowed. If $\A\to\B$ is not one-to-one $\abs{A}$ is greater than $\abs{B}$, we will have a codomain with two references, since every value has an absolute value and in that case this wouldn't be onto or one-to-one.
+}
+
+\exerciseenum{20}{%
+\addtocounter{enumi}{1}
+\item%b
+If $\seq{a_n}$ is defined by $a_n=(n + 1)^{n+1}$, then we get that
+\[
+\begin{array}{rclclclcl}
+a_0 &=& (0 + 1)^{0+1} &=& 1^1 &=& 1 \\
+a_1 &=& (1 + 1)^{1+1} &=& 2^2 &=& 4 \\
+a_2 &=& (2 + 1)^{2+1} &=& 3^3 &=& 27 \\
+a_3 &=& (3 + 1)^{3+1} &=& 4^4 &=& 256
+\end{array}
+\]
+% This array aloows you to write intermediate steps.
+% If you need more, add another 'cl' to the definition.
+}
+
+\exerciseenum{21}{%
+\item%a
+\begin{eqnarray*}
+\displaystyle
+% This \displaystyle is to get the boundaries under and above the
+% summation sign and not next to it.
+% In this case it is not really needed actually...
+\sum_{j=0}^8 3 \cdot 2^j
+  &=& 3 \cdot 2^0 + 3 \cdot 2^1 + 3 \cdot 2^2 + 3 \cdot 2^3 + 3 \cdot 2^4 + 3 \cdot 2^5 + 3 \cdot 2^6 + 3 \cdot 2^7 + 3 \cdot 2^8\\
+  &=& 3 \cdot 1 + 3 \cdot 2 + 3 \cdot 4 + 3 \cdot 8 + 3 \cdot 16 + 3 \cdot 32 + 3 \cdot 64 + 3 \cdot 128 + 3 \cdot 256 \\
+  &=& 3 + 6 + 12 + 24 + 48 + 96 + 192 + 384 + 768 = 1533  \\
+\end{eqnarray*}
+% An eqnarray is a abbreviation for an array of type {rcl}
+% The * means that there won't be any labels.
+}
+
+\newpage
+\exerciseenum{22}{%
+\addtocounter{enumi}{1}
+\item%a
+\begin{eqnarray*}
+\displaystyle
+\sum_{i=0}^2 \sum_{j=0}^3 (2i+3j)
+  &=& (0 + 0) + (0 + 3) + (0 + 6) + (0 + 9) + (2 + 0)\\ + (2 + 3) + (2 + 6) + (2 + 9) + (4 + 0)\\ + (4 + 3) + (4 + 6) + (4 + 9)\\
+  &=& 0 + 3 + 6 + 9 + 2 + 5 + 8 + 11 + 4 + 7 + 10 + 13 = 78 \\
+\end{eqnarray*}
+% You may use \big( and \big) to get bigger parentheses.
+}
+\end{document}

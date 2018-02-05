@@ -1,0 +1,317 @@
+% caee325d-e3f3-4171-81c1-0e681cdea6bc
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+\usepackage{amsmath}
+% And some student asked me to include amsmath as well...
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+% The tikz package can be used to draw all kinds of diagrams.
+% In this assignment it is being used for drawing the parse trees.
+
+\usepackage[all]{xy}
+% Instead of tikz you can also use xy to draw parse trees with
+
+
+\usepackage{xspace}
+% xspace can be used to let LaTeX decide whether a command should be followed
+% y a space or not, depending on what follows.
+
+% Some obscure definition to create a circled node within xy.
+% The definition is made by Freek Wiedijk who prefers to do his definitions
+% in TeX instead of LaTeX, which explains the \def instead of \newcommand.
+\def\node{*++[o][F-]}
+\def\fnode{*++[o][F=]}
+
+\newcommand{\exercise}[2]{\subsection*{Exercise #1}{#2}}
+\newcommand{\exerciseenum}[2]{\subsection*{Exercise #1}{\begin{enumerate}[a)]#2\end{enumerate}}}
+% We defined our own commands to make it easy to present all the
+% exercises in the same style. The first one does not automatically
+% start an 'enumerate' list, the second one does.
+% The [2] means that our command needs two arguments.
+% The #1 and the #2 indicate where we use these arguments in the
+% command.
+% There are several ways to have automatic numbering for the exercises,
+% but here we have chosen to use a subsection for this and use manual
+% numbering. This is because maybe not everyone will be able to do hand in
+% all exercises.
+% Note that we add the '*' to make sure that the subsection is not numbered.
+% (Since we don't have a \section, the numbers for a subsection would be
+% ugly like 0.1, 0.2 et cetera.
+% The environment 'enumerate' automatically numbers the items in this list.
+% The optional [a)] makes sure that the list will be like a), b), c) et cetera.
+
+\usepackage{mathtools}
+
+\newcommand{\abs}[1]{\ensuremath{\left|\, #1 \,\right|}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor\, #1 \,\right\rfloor}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil\, #1 \,\right\rceil}}
+% Abbreviations for the absolute value, ceil and floor function.
+
+\newcommand{\set}[1]{\ensuremath{\left\{{#1}\right\}}}
+% This command puts curly braces around its argument, so it becomes
+% a set. The \left and \right make sure that the braces grow in size
+% if the contents of the set are large symbols.
+
+\newcommand{\setbuild}[2]{\ensuremath{\set{{#1}\mid{#2}}}}
+% We also introduce a shortcut for using the set builder notation.
+% Do you understand what it does?
+
+\newcommand{\seq}[1]{\ensuremath{\left\{{#1}\right\}}}
+% This puts curly braces to define a sequence.
+% Note that this is the same as the definition for a \set.
+
+% And the next series of commands gives you some of the default sets
+% that were in the slides.
+\newcommand{\TT}{\ensuremath{\mathbb{T}}}
+\newcommand{\FF}{\ensuremath{\mathbb{F}}}
+\newcommand{\NN}{\ensuremath{\mathbb{N}}}
+\newcommand{\NNp}{\ensuremath{\mathbb{N}^{+}}}
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\ZZp}{\ensuremath{\mathbb{Z}^{+}}}
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}}
+\newcommand{\QQp}{\ensuremath{\mathbb{Q}^{+}}}
+\newcommand{\RR}{\ensuremath{\mathbb{R}}}
+\newcommand{\RRp}{\ensuremath{\mathbb{R}^{+}}}
+\newcommand{\CC}{\ensuremath{\mathbb{C}}}
+
+% And the next command gives a shorthand for the power set of a given set.
+\newcommand{\power}[1]{\ensuremath{{\cal P}\left({#1}\right)}}
+
+% The following two commands can be used to get an upright T or F, even
+% when in math mode.
+\newcommand{\Tt}{\ensuremath{\mathrm T}}
+\newcommand{\Ff}{\ensuremath{\mathrm F}}
+
+% Below is the tikz-definition that is used for the parse trees.
+\tikzset{
+  treenode/.style = {
+    align=center,
+    inner sep=0pt,
+    text centered,
+    font=\sffamily},
+  arn_n/.style = {
+    thick,
+    treenode,
+    circle,
+    font=\sffamily\bfseries,
+    draw=black,
+    %text width=1.5em,
+    minimum size=1.5em
+    },
+  arn_r/.style = {
+    treenode,
+    circle,
+    red,
+    draw=red,
+    %text width=1.5em,
+    minimum size=1.5em,
+    very thick},
+}
+
+% We want to have a good way of presenting the | relation.
+\DeclareMathOperator{\divides}{\mid}
+
+% And we also want to have an easy way to create a bold mod as operator.
+\DeclareMathOperator{\emod}{\mathbf{mod}}
+
+% And in addition we want to have a non bold version for (mod n).
+\newcommand{\tmod}{\mbox{mod}\xspace}
+
+% We create an environment for numbered theorems.
+\newtheorem{theorem}{Theorem}
+
+% And we create a \templtag command for referring to the template.
+\newcommand{\templtag}[1]{\marginpar{\fbox{#1}}}
+\reversemarginpar
+\title{Mathematical Structures\\Assignment 6}
+
+% Replace the placeholders by your real name, student number and
+% group (for the exercise hours)
+\author{Tony Lopar \\ s1013792 \quad Group 1}
+
+% In LaTeX everything before \begin{document} is called pre-amble.
+% This is where you put all important settings. The real document
+% starts after \begin{document}.
+\begin{document}
+\maketitle
+% \maketitle makes sure that the title is shown on the first page of
+% the document.
+
+
+% Now we use the command we defined earlier and give it the proper two
+% parameters.
+% Because the second parameter is long, we put a % directly after the
+% opening curly brace {. This is not needed but makes the source file
+% look a bit better.
+\exercise{10}{%
+% Remove the part that you don't need!
+% Either
+% \begin{quote}
+% We are going to prove the statement.
+% So we may assume that $a \divides bc$, where $a$, $b$, and $c$
+% are positive integers and $a \neq 0$,
+% and we show that from this it follows that $a \divides b$ or $a \divides c$.
+% \dots
+% \end{quote}
+% or
+\begin{quote}
+We are going to disprove the statement.
+So we are going to give a counterexample such that a = 6, b = 3 and c = 4. In this example we will get that $6 \mid 3 \cdot 4$, but $6 \nmid 3$ and $6 \nmid 4$, so the statement is false.
+\end{quote}
+}
+\exerciseenum{11}{%
+\item%a
+\begin{eqnarray*}
+\lefteqn{(99^2 \emod 32)^3 \emod 15 } \\ % You may use \lefteqn{\dots}
+                                         % if you want the left hand side
+                                         % to overflow above the middle
+                                         % and right hand side of the array.
+&=& (9801 \emod 32)^3 \emod 15  \\
+&=& 9^3 \emod 15 \\
+&=& 729 \emod 15 \\
+&=& 9
+\end{eqnarray*}
+}
+
+\exercise{12}{%
+We may assume that $n$ is an integer
+and we will show that from this it follows that
+$n^2 \equiv 0 \, (\tmod\, 4)$ % The \, provides a bit extra space.
+or
+$n^2 \equiv 1 \, (\tmod\, 4)$.
+We start by making a case distinction:
+
+\begin{equation}
+    n^2 \equiv
+    \begin{cases*}
+        0(\emod 4)
+        % , & \text{for } n \enspace is \enspace even   \\
+        \enspace \text{or} \\
+        1(\emod 4)
+        % , & \text{for } n \enspace is \enspace odd
+    \end{cases*}
+  \end{equation}
+  From this case distinction we have to find in which cases $n^2$ is congruent to that case. We find that when n is an even number, then it it can also be written as $n = 2k$ where $k \in  \ZZ$. So $n^2 = 4k^2$, which is dividable by 4, so is congruent to $0 (\emod 4)$. Since an even number is 2k, we know that 2k + 1 or 2k - 1 are both odd numbers. Let's first take a look at $n = 2k + 1$ which will be $n^2 = 4k^2 + 4k + 1$. In this case $(4k^2 + 4k + 1)(\emod 4) = 1$. In the case of $n = 2k - 1$ we find that $n^2 = 4k^2 - 4k + 1 \equiv 1(\emod 4)$. So, we discovered the following case distinction:
+\begin{equation}
+    n^2 \equiv
+    \begin{cases*}
+        0(\emod 4), & \text{for n is even}   \\
+        1(\emod 4), & \text{for n is odd}
+    \end{cases*}
+  \end{equation}
+}
+
+\exercise{13}{%
+We use the notation used in the slides:
+\[
+\begin{array}{c|c|c|l}
+\mbox{step} & \mbox{pair} & \mbox{remainder} & \mbox{linear combination}
+\\ \hline
+1 & (91,26)     & 13 = 91 - 3 \cdot 26  & 13 = 1 \cdot 91 - 3 \cdot 26 \\
+  &             &                       & 13 = 0 \cdot 26 + 1 \cdot (91 - 3 \cdot 26) \\
+2 & (26, 13)    & 0 = 26 - 2 \cdot 13       & 13 = 0 \cdot 26 + 1 \cdot 13
+\end{array}
+\]
+}
+
+\exercise{14}{%
+I will solve this exercise by using trial division. Since a and b contain integers that aren't primes I will split these in primes. For example, $8^3$ will become $2^3 \cdot (2^2)^3$. This results in the following values: \\
+$a = 2^9 \cdot 3^7 \cdot 5^6$ \\
+$b = 2^3 \cdot 3^5 \cdot 7^4 \cdot 11$ \\
+Now we know this, we can calculate gcd(a, b) which is $2^3 \cdot 3^5 = 1944$. We can also calculate the lcm(a, b) which is $2^9 \cdot 3^7 \cdot 5^6 \cdot 7^4 \cdot 11 = 462086856000000$.
+% We could use the Euclidean algorithm again, but there is a smarter way
+% to do this.
+}
+
+\exercise{15}{%
+First of all, we set the domain of all integers in this exercise to $\ZZ_{11}$, so the $\emod11$ after each integer will be left out.
+\begin{eqnarray*}
+7^{1234} &=& 7^{123 \cdot 10 + 4} \\
+&=& 7^{123 \cdot 10} \cdot 7^4 \\
+&=& (7^{123})^{10} \cdot 7^4 \\
+&\stackrel{\star}{=}& 1 \cdot 7^4 \\
+&=& 7^4 \\
+&\stackrel{\star}{=}& 7(\emod 4) \\
+&=& 3
+\end{eqnarray*}
+At $(\star)$ we use Fermat's little theorem,
+which is allowed because in the first case $11 \in \ZZ$ which is also a prime and $11 \nmid 7$. In the second case we can use Fermat's little theorem, because 7 is an integer.
+}
+
+\exercise{16}{%
+We can transform this question into the following simultaneous
+system of equations:
+\begin{eqnarray*}
+n &\equiv & 2 \, (\tmod 3)\\
+n &\equiv & 4 \, (\tmod 5)\\
+n &\equiv & 5 \, (\tmod 7)\\
+\end{eqnarray*}
+By knowing this we can assign the following variables:
+\begin{eqnarray*}
+    m_1 &:=& 3 \\
+    m_2 &:=& 5 \\
+    m_3 &:=& 7 \\
+    m &:=& 3 \cdot 5 \cdot 7 = 105 \\
+    M_1 &:=& \frac{105}{3} = 35 \\
+    M_2 &:=& \frac{105}{5} = 21 \\
+    M_3 &:=& \frac{105}{7} = 15 \\
+\end{eqnarray*}
+
+Then gcd($m_1, M_1) = 1$, gcd($m_2, M_2) = 1$ and gcd($m_3, M_3) = 1$.
+Thus we need to find an $y_1$ such that $M_1 \cdot y_1 \equiv 1 (\emod m)$, an $y_2$ such that $M_2 \cdot y_2 \equiv 1 (\emod m)$ and an $y_3$ such that $M_3 \cdot y_3 \equiv 1 (\emod m)$. \\
+In order to find $y_1$ we have to discover with which value $35 \cdot y_1 \equiv 1 (\emod 3)$. By trying some values for $y_1$, we discover that 2 is a suitable value, because $70 (\emod 3) = 1$. \\
+To find $y_2$ we have to discover with which value $21 \cdot y_2 \equiv 1 (\emod 5)$. By trying some values for $y_2$, we discover that 1 is a suitable value, because $21 (\emod 5) = 1$. \\
+To find $y_3$ we have to discover with which value $15 \cdot y_3 \equiv 1 (\emod 7)$. By trying some values for $y_3$, we discover that 8 is a suitable value, because $120 (\emod 7) = 1$. \\
+
+Now we know the values for y, we can calculate our value for n.
+\begin{eqnarray*}
+    n &:=& (2 \cdot M_1 \cdot y_1 + 4 \cdot M_2 \cdot y_2 + 5 \cdot M_3 \cdot y_3) \emod m \\
+        &=& (2 \cdot 35 \cdot 2 + 4 \cdot 21 \cdot 1 + 5 \cdot 15 \cdot 8)\emod 105 \\
+        &=& (140 + 84 + 1000)\emod 105 \\
+        &=& (1224)\emod 105 \\
+        &=& 79 \\
+\end{eqnarray*}
+All solutions in $\ZZ$ are given by the set $\{79 + k \cdot 105 \enspace | \enspace k \in \ZZ \}$.
+
+}
+\end{document}

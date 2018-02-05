@@ -1,0 +1,238 @@
+%
+% Although we try to provide a template that completely
+% matches the corresponding assignment, we do expect you
+% to check that you have indeed answered all questions.
+%
+
+% ALSO VERY IMPORTANT:
+% This is just a template to help you with the LaTeX part of the assignment.
+% So you may change it completely according to your own wishes!
+%
+
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array}
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+\usepackage{amssymb}
+% This package loads mathematical things like the fonts for the blackboard
+% bold for the set of natural numbers.
+
+\newcommand{\exercise}[2]{\subsection*{Exercise #1}{#2}}
+\newcommand{\exerciseenum}[2]{\subsection*{Exercise #1}{\begin{enumerate}[a)]#2\end{enumerate}}}
+% We defined our own commands to make it easy to present all the
+% exercises in the same style. The first one does not automatically
+% start an 'enumerate' list, the second one does.
+% The [2] means that our command needs two arguments.
+% The #1 and the #2 indicate where we use these arguments in the
+% command.
+% There are several ways to have automatic numbering for the exercises,
+% but here we have chosen to use a subsection for this and use manual
+% numbering. This is because maybe not everyone will be able to do hand in
+% all exercises.
+% Note that we add the '*' to make sure that the subsection is not numbered.
+% (Since we don't have a \section, the numbers for a subsection would be
+% ugly like 0.1, 0.2 et cetera.
+% The environment 'enumerate' automatically numbers the items in this list.
+% The optional [a)] makes sure that the list will be like a), b), c) et cetera.
+
+
+\newcommand{\set}[1]{\ensuremath{\left\{{#1}\right\}}}
+% This command puts curly braces around its argument, so it becomes
+% a set. The \left and \right make sure that the braces grow in size
+% if the contents of the set are large symbols.
+
+\newcommand{\setbuild}[2]{\ensuremath{\set{{#1}\mid{#2}}}}
+% We also introduce a shortcut for using the set builder notation.
+% Do you understand what it does?
+
+% And the next series of commands gives you some of the default sets
+% that were in the slides.
+\newcommand{\TT}{\ensuremath{\mathbb{T}}}
+\newcommand{\FF}{\ensuremath{\mathbb{F}}}
+\newcommand{\NN}{\ensuremath{\mathbb{N}}}
+\newcommand{\NNp}{\ensuremath{\mathbb{N}^{+}}}
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\ZZp}{\ensuremath{\mathbb{Z}^{+}}}
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}}
+\newcommand{\QQp}{\ensuremath{\mathbb{Q}^{+}}}
+\newcommand{\RR}{\ensuremath{\mathbb{R}}}
+\newcommand{\RRp}{\ensuremath{\mathbb{R}^{+}}}
+\newcommand{\CC}{\ensuremath{\mathbb{C}}}
+
+% An the next command gives a shorthand for the power set of a given set.
+\newcommand{\power}[1]{\ensuremath{{\cal P}\left({#1}\right)}}
+
+\title{Mathematical Structures\\Assignment 1}
+
+% Replace the placeholders by your real name, student number and
+% group (for the exercise hours)
+\author{Tony Lopar \\ s1013792 \quad Group 1}
+
+% In LaTeX everything before \begin{document} is called pre-amble.
+% This is where you put all important settings. The real document
+% starts after \begin{document}.
+\begin{document}
+\maketitle
+% \maketitle makes sure that the title is shown on the first page of
+% the document.
+
+
+% Now we use the command we defined earlier and give it the proper two
+% parameters.
+% Because the second parameter is long, we put a % directly after the
+% opening curly brace {. This is not needed but makes the source file
+% look a bit better.
+\exerciseenum{16}{%
+\item%a
+The set $\{0,3,6,9,12\}$
+% If we want math then we have to use $...$ or \[...\] to change from text
+% mode to math mode.
+can be written using set builder notation as follows:
+\[
+\setbuild{q\in \NN}{q \mbox{~is a multiple of 3 and $q < 13$} } \\
+\]
+The set starts with 0 and is increased every step by 3, so every element is a multiplication of 3.
+% If you are in math mode, but you want to use normal text, you can do that
+% using the \mbox{...} command. The text within the curly braces is typeset
+% as normal text. Note the ~ in the beginning. This is because LaTeX doesn't
+% add spaces in math mode between the q and the text.
+
+% Obviously the answer above is wrong, but now you have an example
+% of how to do this.
+% If you don't know the answer, then please remove this stupid answer
+% because then the assistants don't have to wonder why you gave such a
+% stupid answer.
+
+% Because we don't want to hand in b) we tell enumerate (enum) to skip 1
+% number on the first level (i).
+\addtocounter{enumi}{1}
+\item%c
+The set $\{m,n,o,p\}$
+can be written using set builder notation as follows:
+\[
+\setbuild{c}{c \mbox{~is an lowercase letter in the Latin alphabet after l and before q}}
+\]
+The letters in the set are all lowercase and are in the Latin alphabet. The shown letters are between l and q.
+
+% You will see that if you uncomment the next \item, it will show as d).
+%\item%d
+}
+
+\exerciseenum{17}{%
+\item%a
+The sets $\set{1,3,3,3,5,5,5,5,5,}$ and $\set{5,3,1}$ are equal,
+because they contain exactly the same elements, namely 1, 3 and 5. The order and number of occurrences of elements doesn't matter when comparing sets, which makes the sets equal.
+\item%b
+The sets $\set{\set{1}}$ and $\set{1,\set{1}}$ are not equal,
+because $1 \notin \set{\set{1}}$ while $1 \in \set{1,\set{1}}$
+}
+
+\exerciseenum{18}{%
+\item%a
+The statement
+$0 \in \emptyset$
+is false,
+because an $\emptyset$ has no elements at all, so 0 can't be an element from the set.
+
+\addtocounter{enumi}{2}
+\item%d
+The statement
+$\emptyset\subset \set{0}$
+is true,
+because the $\emptyset$ is a proper subset of every nonempty set.
+
+\addtocounter{enumi}{2}
+\item%g
+The statement
+$\set{x}\in\set{x}$
+is false,
+because $\set{x}$ doesn't contain a set of x as element.
+}
+
+\exercise{19}{%
+If $A$ and $B$ are arbitrary sets such that $\power{A}=\power{B}$,
+then it
+follows
+that $A=B$,
+because if we assume that $A \neq B$, then A or B should have an element that isn't an element in the other set. If we have $x \in A$ and $x \notin B$, then $\set{x} \in \power{A}$ while $\set{x} \notin \power{B}$. The element $\set{x}$ is in $\power{A}$, but not in $\power{B}$, so $\power{A} \neq \power{B}$. So if $P(A) = P(B)$, then we need two sets with the same subsets which means $A = B$ needs to be true.
+}
+
+\exerciseenum{20}{%
+\item%a
+There
+exists
+a set $A$ such that $\power{A}=\emptyset$,
+because if we take $A = \emptyset$ the resulting $\power{A}$ will only contain $\emptyset$
+\item%b
+There
+exists
+a set $A$ such that $\power{A}=\set{\emptyset, \set{a}}$,
+because if we take $A = \set{a}$ the powerset will be: $\power{A} = \set{\emptyset, \set{a}}$.
+}
+
+\exercise{21}{%
+Let's assume that $A$ and $B$ are both non-empty sets such that $A\neq B$.
+Then $A \times B$ will have the cartesian product: $\set{(A_1, B_1), (A_1, B_2), (A_2, B_1), (A_2, B_2)}$ while $B \times A = \set{(B_1, A_1), (B_1, A_2), (B_2, A_1), (B_2, A_2)}$. Since the position of elements matters in cartesian products these sets are not equal if A en B are not equal.
+}
+
+\exerciseenum{22}{%
+\item%a
+$A\cup B = \set{a, b, c, d, e, f, g, h}$
+
+\addtocounter{enumi}{2}
+\item%d
+$A - B = \set{f, g, h}$
+}
+
+\exerciseenum{23}{%
+\addtocounter{enumi}{1}
+\item%b
+If we assume that $A$ and $B$ are arbitrary sets such that $A\subseteq B$,
+then $A\cap B = A$ holds.
+This is because if we assume that $A = \set{1, 2, 3, 4}$ and $B = \set{1, 2, 3, 4, 5, 6}$, then $A \subset B$ applies. Because $5 \notin A$ and $6 \notin A$ the intersect will be as follows: $A \cap B = \set{1, 2, 3, 4}$. This is equal to set A.
+}
+
+\exerciseenum{24}{%
+\addtocounter{enumi}{3}
+\item%d
+Let $A_i=(i,\infty)=\setbuild{x\in\RR}{x>i}$.
+Then
+\begin{eqnarray*}
+A_1 &=& (1,\infty) \\
+A_2 &=& (2,\infty) \\
+    &\vdots&
+\end{eqnarray*}
+This leads to the following observations: the first value of the pair increases for every i which decreases the range of the interval with 1 every step. $(i, \infty)$ is an open interval which means i and $\infty$ are not included. Because i starts at 1 will never included in the interval. The union of $A_i$ contains all integers between 1 and $\infty$. Because the range is shrinking as $A_i$ rises the last possible set will be an empty set and because $\emptyset$ is an subset of every set, this will be the intersect.
+
+And from this we may conclude that
+\begin{eqnarray*}
+\bigcup_{i=1}^{\infty} A_i &=& \mathbb{Z^+} - 1 \\
+\bigcap_{i=1}^{\infty} A_i &=& \emptyset
+\end{eqnarray*}
+
+}
+\end{document}
