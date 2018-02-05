@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+\usetikzlibrary{automata,positioning}
+
+\begin{document}
+
+\title{Talen \& Automaten \\ Assignment 5}
+\date{\today}
+\author{Tony Lopar \enspace s1013792 \\TA: Nienke Wessel}
+\maketitle
+
+\section*{Exercise 1}
+\begin{enumerate}[label= \alph*)]
+  \item Two possible left-most derivations are:
+  \begin{align*}
+  d_1 &: S \Rightarrow aS \Rightarrow aSb \Rightarrow aabb \\
+  d_2 &: S \Rightarrow Sb \Rightarrow aSb \Rightarrow aabb
+  \end{align*}
+  We see that we can derive the word aabb with two different leftmost derivations.
+  \item $L_1 = a^*abb^* (a^*abb^*)^*$ \\
+  \emph{The SS may give a repetition of the expression, but the part $a^*abb^*$ should occur at least once in the word.}
+  \item A non-ambiguous regular grammar is:
+  \begin{align*}
+    S &\rightarrow aS | aB \\
+    B &\rightarrow bB | bZ | bS \\
+    Z &\rightarrow \lambda
+  \end{align*}
+\end{enumerate}
+
+\section*{Exercise 2}
+A context free grammar for $L_2$ may be:
+\begin{align*}
+  S &\rightarrow NM \\
+  N &\rightarrow aNb | \lambda \\
+  M &\rightarrow bMa | \lambda
+\end{align*}
+This grammar is correct, because the non-terminal N gives $a^nb^n$ since an a is placed in front and a b at the back every time. The value of N may also be 0, since we can immediately derive $\lambda$ from it. This N is followed by the M. This non-terminal gives $b^ma^m$ since in every iteration a b is placed in front and an a at the end. The concatimination of these two parts gives $a^nb^{n+m}a^m$
+
+A context free grammar for $L_3$ may be:
+\begin{align*}
+  S &\rightarrow A | B | R \\
+  A &\rightarrow aB \\
+  B &\rightarrow bS | brrr \\
+  R &\rightarrow rS
+\end{align*}
+This grammar is correct, because the only endpoint in the grammar is brrr and every word should end with this. Furthermore, we may place from the start an a, b or r and the restrictions for the certain letter are handled in their non-terminal. This means that when we place an a, this is followed by the non-terminal B. Besides that the letter b can be followed by all other letters or by rrr for the end of the word.
+
+A context free grammar for $L_4$ may be:
+\begin{align*}
+  S &\rightarrow UaV\\
+  U &\rightarrow aRbU | \lambda \\
+  R &\rightarrow aR | \lambda \\
+  V &\rightarrow aV | bbV | \lambda
+\end{align*}
+This grammar is correct since U and V represent the possible repeating parts. Between these parts there should be the letter a. The first part has an a and b with in between zero or multiple a's. After the last a we can derive the $\lambda$ in R. The second part is a reperition of a or bb. This means that in this part we can put an a or bb followed by a repetition. This reperition is achieved by the self-reference of V. If the whole part should be there zero times, we can immediately derive $\lambda$.
+
+\section*{Exercise 3}
+In the grammar I put the states from the DFA as non-terminals in the grammar.
+\begin{align*}
+  q_0 &\rightarrow aq_0 | bq_1 | \lambda \\
+  q_1 &\rightarrow aq_0 | bq_3 \\
+  q_2 &\rightarrow aq_0 | bq_4 \\
+  q_3 &\rightarrow aq_2 | bq_3 \\
+  q_4 &\rightarrow aq_4 | bq_4
+\end{align*}
+
+\end{document}

@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{ulem}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+\begin{document}
+
+\title{Talen \& Automaten \\ Assignment 1}
+\date{\today}
+\author{Tony Lopar \enspace s1013792 \\TA: Nienke Wessel}
+\maketitle
+
+\section*{Exercise 1}
+\begin{enumerate}[label=\alph*]
+  \item We may define the function f such that it replaces all the occurences of a with $\lambda$. This function should iterate through the letters and remove it when it equals a. For this function we can make the following case distinction:
+  \begin{equation*}
+    f(w) =
+    \begin{cases*}
+        \lambda , & \text{for f($\lambda$) or w only consists of a}   \\
+        w, & \text{for f(aw)} \\
+        xf(w), & \text{for f(xw) otherwise}
+    \end{cases*}
+  \end{equation*}
+  In this distinction we see that when a word with an a is entered the word with the a should be given without a.
+  \item The function f removes all a's in the words of $A^*$. So when we have $f(f(w))$, then the inner function will already give a text without a. This means that the input for the outer function will always have a word without any a as input. This makes that $f(w) = f(f(w))$ holds for all words of $A^*$.
+\end{enumerate}
+
+\section*{Exercise 2}
+\begin{enumerate}[label=\alph*]
+  \item A word that is in all three languages is "abba". A word that is in none of the languages is "bab", because the the languages all words have to start with an a.
+  \item $L_1$ consists of the word "abba" 0 or more times. Words can only contain the whole word "abba". $L_2$ should have an "a" at the beginning of each word. The other words have 0 or more times the combination "bba" after the a. $L_3$ has 0 or mores "a" where each a might be expanded with "bba". To show that the languages are different, we can give a word that's in one language and not in the others. $L_3$ can contain the word "aaa" which cannot be in $L_2$ and $L_1$. Both $L_1$ and $L_2$ cannot contain this word, since the second letter in these languages cannot be an "a". So, $L_1 \neq L_3$ and $L_2 \neq L_3$. $L_1$ cannot contain the word "abbabba", since $L_1$ can only have words with a repition of "abba" which isn't compl while $L_2$ and $L_3$ do contain this word.
+  \item In this exercise I assumed that the + is an exclusive or, so $a^* + b$ cannot produce ab. It wasn't really clear for me which kind of or the + sign was. The languages are not equal, since $ab \notin L$ while $ab \in \{a,  b\}^*$ since L should have an "a" as last character when there's an "a" in the word.
+\end{enumerate}
+
+\section*{Exercise 3}
+\begin{enumerate}[label=\alph*]
+  \item We can define $L = ((a)^* (bb)^* (a)^*)^*$. The regular expression has always an even number of b, because we only may place a b in pairs of two. Furthermorem the expression cannot end with ab, since if the b is the last character, the pre-last character is always another b.
+  \item
+  % $L = (U(D + DD(U + UU(D))) + D(U + UU(D + DD(U))))^*$.
+  We can define $L = (UD + DU)^*$. \\
+  Since we start at the ground floor we have two options, we can go up or we can go down. If we go up we can only go down after this, because there is no floor above anymore. When we go down, then we only can go up in the next action. In both cases we end at the ground floor from which we started and may choose between both options again.
+\end{enumerate}
+
+\end{document}
